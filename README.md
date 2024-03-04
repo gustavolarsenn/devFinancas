@@ -1,5 +1,5 @@
 # devFinancas
-### Gestão de financeira pessoal
+### Gestão financeira pessoal
 * Transações (crédito/débito)
 * Categorização
 * Criação de categorias
