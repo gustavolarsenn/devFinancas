@@ -1,5 +1,4 @@
 # devFinancas
-
 ### Gestão de financeira pessoal
 * Transações (crédito/débito)
 * Categorização
@@ -12,3 +11,6 @@
 * HTML e CSS
 * Apache MySQL
 * GitHub
+
+#### Alunos: Gustavo Larsen e Luis Felipe
+Trello: https://trello.com/b/epjzUxz1/gest%C3%A3o-financeira-pessoal
