@@ -8,7 +8,7 @@
 
 ### Ferramentas
 * PHP
-* HTML e CSS
+* HTML, CSS e React
 * Apache MySQL
 * GitHub
 
