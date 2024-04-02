@@ -1,0 +1,16 @@
+.input_login{
+    width: 300px;
+    height: 40px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+    border: 1px solid #D9D9D9;
+    background-color: #D9D9D9;
+    margin: 5px 0;
+}
+
+.input_login::placeholder{
+    padding-left: 10px;
+    
+
+}
+
