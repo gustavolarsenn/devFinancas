@@ -1,5 +1,5 @@
-import Container from "./components/container";
-import Login from "./pages/login";
+import Container from "./components/container"
+import Login from "../src/pages/Login/login"
 import styles from "./App.css"
 
 function App() {

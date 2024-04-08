@@ -1,9 +1,16 @@
-import Button from "./button"
-import Inputs from "./inputs"
+import Button from "../../components/button"
+import Inputs from "../../components/inputs"
 import styles from "./loginform.module.css"
+import img from "../../img/logo.png"
 
 function LoginForm(){
     return(
+        <>
+         <div>
+            <div>
+                <img src={img} alt=""  className={styles.img}/>
+            </div>
+        </div>   
         <div className={styles.container}>
             <div className={styles.login}>
             <form>
@@ -36,6 +43,7 @@ function LoginForm(){
             </form>
         </div>
         </div>
+        </>
     )
 }
 

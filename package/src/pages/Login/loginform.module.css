@@ -1,3 +1,13 @@
+.img {
+    width: 120px; 
+    height: auto; 
+    padding-left: 20px;
+}
+
+body {
+    background-color: #1F2731;
+}
+
 .container{
     position: absolute;
     top: 50%;
@@ -49,8 +59,5 @@
     text-decoration: none;
     font-style: italic;
 }
-
-
-
 
 
