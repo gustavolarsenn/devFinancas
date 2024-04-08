@@ -1,16 +1,18 @@
 <?php
+
+
 class Database{
     public $servername = "localhost";
     public $username = "adm";
     public $password = "1234";
-    public $dbname = "finances";
+    public $dbname = "finance";
     public $conn;
 
     public function __construct(){
         $this->servername = "localhost";
         $this->username = "adm";
         $this->password = "1234";
-        $this->dbname = "finances";
+        $this->dbname = "finance";
         $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
 }
 }
