@@ -1,5 +1,5 @@
-import Container from '../components/container'
-import LoginForm from '../components/loginform'
+import Container from '../../components/container'
+import LoginForm from './loginform'
 
 function Login() {
     return(

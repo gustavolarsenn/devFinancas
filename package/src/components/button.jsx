@@ -1,9 +1,9 @@
-import styles from './button.css'
+import styles from './button.module.css'
 
-function Button({name, value, placeholder}) {
+function Button({name, buttonStyle, placeholder}) {
     return(
         <div>
-            <button>{name}</button>
+            <button className={`${styles.buttonStyle} ${styles[buttonStyle]}`}>{name}</button>
         </div>
     )
 }

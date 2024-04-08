@@ -1,9 +1,26 @@
+.img {
+    width: 120px; 
+    height: auto; 
+    padding-left: 20px;
+}
+
+body {
+    background-color: #1F2731;
+}
+
+.container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .login {
     margin: 0;
     padding: 0;
     background-color: #323E4D;
-    height: 500px;
-    width: 400px;
+    height: 600px;
+    width: 500px;
     border-radius: 20px;
     color: white;
     font-family: "Inter", sans-serif;
@@ -12,7 +29,8 @@
 
 .login h1{
     margin: 0;
-    padding: 10px;
+    padding: 15px;
+    font-size: 40px;
     text-align: center;
     background-color: #596E88;
     border-radius: 20px 20px 0 0;
@@ -23,13 +41,23 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 200;
     padding-top: 50px;
-    
 }
 
 .lab {
-    padding-bottom: 15px;
+    padding-bottom: 30px;
 }
+
+.login p {
+    font-size: 16px;
+}
+
+.login a {
+    color: white;
+    text-decoration: none;
+    font-style: italic;
+}
+
 

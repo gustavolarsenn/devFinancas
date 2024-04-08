@@ -1,0 +1,18 @@
+.open{
+    width: 350px;
+    height: 60px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+    border: 1px solid #1F2731;
+    background-color: #1F2731;
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.open:hover{
+    background-color: #596E88;;
+    color: #1F2731;
+    border: 1px solid #596E88;
+}
