@@ -13,11 +13,11 @@ Route::get('/teste', function () {
 // returns the home page with all Users
 Route::get('/', UserController::class .'@index')->name('users.index');
 // returns the form for adding a User
-Route::post('/users/create', UserController::class . '@create')->name('users.create');
+Route::get('/users/create', UserController::class . '@create')->name('users.create');
 // adds a User to the database
 Route::post('/users', UserController::class .'@store')->name('users.store');
-// // returns a page that shows a full User
-// Route::get('/users/{user}', UserController::class .'@show')->name('users.show');
+// returns a page that shows a full User
+Route::get('/users/{user}', UserController::class .'@show')->name('users.show');
 // returns the form for editing a User
 Route::get('/users/{user}/edit', UserController::class .'@edit')->name('users.edit');
 // updates a User

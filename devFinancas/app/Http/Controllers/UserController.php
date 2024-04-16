@@ -74,12 +74,12 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    // public function show(string $id)
-    // {
-    //     $user = User::find($id);
-    //     return view('users.show', compact('user'));
-    //     //
-    // }
+    public function show(string $id)
+    {
+        $user = User::find($id);
+        return view('users.show', compact('user'));
+        //
+    }
 
     /**
     * Show the form for editing the specified post.
@@ -88,5 +88,14 @@ class UserController extends Controller
     {
         $user = User::find($id);
         return view('users.edit', compact('user'));
+    }
+
+    /**
+     *  Show the form for deleting the specified post.
+     */
+    public function delete($id)
+    {
+        $user = User::find($id);
+        return view('users.delete', compact('user'));
     }
 }
