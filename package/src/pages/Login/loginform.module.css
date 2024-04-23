@@ -16,10 +16,11 @@ body {
 }
 
 .login {
+    position: relative;
     margin: 0;
     padding: 0;
     background-color: #323E4D;
-    height: 600px;
+    height: 700px;
     width: 500px;
     border-radius: 20px;
     color: white;
@@ -60,4 +61,8 @@ body {
     font-style: italic;
 }
 
-
+.btt {
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 60px;
+}
