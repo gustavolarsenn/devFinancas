@@ -1,26 +1,78 @@
 .navbar {
-  width: 15%;
+  background-color: #1F2731;
+  height: 80px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.menubars {
+  margin-left: 2rem;
+  font-size: 2rem;
+  background: none;
+}
+
+.navmenu {
+  background-color: #1F2731;
+  width: 250px;
   height: 100vh;
-  background-color: #1f2731;
-  color: white;
-  font-family: "Inter", sans-serif;     
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: -100%;
+  transition: 850ms;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
 }
 
-.navbar img {
-  width: 50%;
-  margin: 0 auto;
-   display: flex;
-  text-align: center;
+.navmenu.active {
+  left: 0;
+  transition: 350ms;
+
 }
 
-.navbar ul {
+.navtext {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 8px 0px 8px 16px;
   list-style: none;
-  padding: 0;
-  margin: 0;
+  height: 60px;
 }
 
-.navbar li {
-  padding: 10px 20px;
-  padding-right: 20px;
+.navtext a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-family: 'Inter';
+  width: 95%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0px 16px;
+  border-radius: 4px;
+}
+
+.navtext a:hover {
+  background-color: #596E88;;
+}
+
+.items {
+  width: 100%;
+
+}
+
+.toggle{
+  background-color: #1F2731;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+span {
+  margin-left: 16px;
 }
 

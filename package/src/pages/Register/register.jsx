@@ -1,9 +1,18 @@
-import Container from '../../components/container'
-import RegisterForm from './registerform'
+import Container from '../../components/container';
+import RegisterForm from './registerform';
+import img from "../../img/logo.png";
+import styles from "./register.module.css";
 
-function Register() {
+const Register = () => {
     return(
         <Container>
+            <div className={styles.registerpage}>
+                <div>
+                    <div>
+                        <img src={img} alt="" className={styles.img} />
+                    </div>
+                </div>
+            </div>
             <RegisterForm />
         </Container>
     )
