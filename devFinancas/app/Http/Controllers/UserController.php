@@ -28,7 +28,7 @@ class UserController extends Controller
             'password' => 'required'
           ]);
           User::create($request->all());
-          return redirect()->route('users.index')
+          return redirect()->route('login.login')
             ->with('success','User created successfully.');
         //
     }
@@ -60,6 +60,39 @@ class UserController extends Controller
         return redirect()->route('users.index')
           ->with('success', 'User deleted successfully');
         //
+    }
+
+    public function login(Request $request)
+    {
+        // Retrieve the input data from the request
+        $username = $request->input('username');
+        $password = $request->input('password');
+        
+        // Perform your authentication logic here
+        // For example, check if the username and password are valid
+        $user = User::where('name', $username)->first();
+
+        if ($user && password_verify($password, $user->password)) {
+            // Authentication successful
+            // Store the user's information in the session
+            $request->session()->put('username', $username);
+
+            // Redirect the user to the dashboard or any other page
+            return redirect()->route('users.index');
+        } else {
+            // Authentication failed
+            // Redirect the user back to the login page with an error message
+            return redirect()->route('login.login')->with('error', 'Invalid username or password');
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        // Clear the user's session data
+        $request->session()->forget('username');
+
+        // Redirect the user to the login page
+        return redirect()->route('login.index');
     }
 
     // routes functions
@@ -98,4 +131,16 @@ class UserController extends Controller
         $user = User::find($id);
         return view('users.delete', compact('user'));
     }
+
+    public function loginView()
+    {
+        // Show the login form
+        return view('users.login');
+    }
+    public function logoutView()
+    {
+        // Show the logout form
+        return view('users.logout');
+    }
+
 }
