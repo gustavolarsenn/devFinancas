@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Register = styled.div`
+const Table = styled.div`
     background-color: white;    
     height: 600px;
     width: 90%;
@@ -8,6 +8,15 @@ const Register = styled.div`
     margin: 30px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
    
+`;
+
+const Register = styled.div`
+    background-color: white;    
+    height: 700px;
+    width: 50%;
+    border-radius: 15px;
+    margin: 30px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
 `;
 
 const SmallFrame = styled.div`
@@ -43,14 +52,14 @@ const Title = styled.p`
 
 const FrameTable = ({children, label}) => {
     return (
-        <Register>
+        <Table>
             <div>
                 <Title>{label}</Title>
             </div>
             <div>
                 {children}
             </div>
-        </Register>
+        </Table>
     )
 }
 
@@ -82,15 +91,15 @@ const FrameGraphic = ({children, label}) => {
 
 const FrameRegister = ({children, label}) => {
     return (
-        <FrameGraph>
+        <Register>
             <div>
                 <Title>{label}</Title>
             </div>
             <div>
                 {children}
             </div>
-        </FrameGraph>
+        </Register>
     )
 }
 
-export {FrameTable, Frame, FrameGraphic};
+export {FrameRegister, FrameTable, Frame, FrameGraphic};

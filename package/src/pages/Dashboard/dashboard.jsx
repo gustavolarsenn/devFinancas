@@ -16,7 +16,6 @@ const Body = styled.div`
 
 const SubTitle = styled.h2 `
     font-weight: 250;
-    
 `;
 
 const Layout = styled.div `
@@ -89,4 +88,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
+export default Dashboard;

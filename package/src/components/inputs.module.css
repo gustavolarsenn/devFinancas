@@ -10,4 +10,27 @@
     font-size: 15px;
 }
 
+.input_login:focus {
+    outline: none;
+    border: 1px solid #004c9c; 
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+}
+
+.input_register {
+    width: 90%;
+    height: 40px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    border: none;
+    background-color: white;
+    margin: 0 40px;
+    text-indent: 15px;
+    font-size: 15px;
+}
+
+.input_register:focus {
+    outline: none;
+    border: 1px solid #004c9c; 
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+}
 
