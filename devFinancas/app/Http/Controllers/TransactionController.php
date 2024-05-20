@@ -93,7 +93,7 @@ class TransactionController extends Controller
     public function edit($id)
     {
         $transaction = Transaction::find($id);
-        return view('transaction.edit', compact('Transaction'));
+        return view('transaction.edit', compact('transaction'));
     }
 
     /**
@@ -102,6 +102,6 @@ class TransactionController extends Controller
     public function delete($id)
     {
         $transaction = Transaction::find($id);
-        return view('transaction.delete', compact('Transaction'));
+        return view('transaction.delete', compact('transaction'));
     }
 }

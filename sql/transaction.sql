@@ -6,6 +6,6 @@ CREATE TABLE transaction (
     date DATETIME,
     created_at DATETIME,
     value FLOAT,
-    FOREIGN KEY (category_id) REFERENCES category (category_id),
-    FOREIGN KEY (user_id) REFERENCES user (user_id)
+    FOREIGN KEY (category_id) REFERENCES categories (category_id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
 );
