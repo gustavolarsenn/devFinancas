@@ -4,7 +4,7 @@ const Table = styled.div`
     background-color: white;    
     height: 600px;
     width: 90%;
-    border-radius: 15px;
+    border-radius: 10px;
     margin: 30px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
    
@@ -13,8 +13,8 @@ const Table = styled.div`
 const Register = styled.div`
     background-color: white;    
     height: 700px;
-    width: 50%;
-    border-radius: 15px;
+    width: 100%;
+    border-radius: 10px;
     margin: 30px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
 `;
@@ -23,7 +23,7 @@ const SmallFrame = styled.div`
     background-color: white;    
     height: 250px;
     width: 50%;
-    border-radius: 15px;
+    border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
     margin: 0;
     margin-top: 30px;
@@ -33,7 +33,7 @@ const FrameGraph = styled.div`
     background-color: white;    
     height: 320px;
     width: 95%;
-    border-radius: 15px;
+    border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
     margin: 0;
 `;
@@ -45,7 +45,7 @@ const Title = styled.p`
     display: flex;
     justify-content: center;
     color: white;
-    border-radius: 15px 15px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
     
 `;
