@@ -15,7 +15,7 @@ Route::get('/', function () {
 
 // Group routes that require an active session
 
-Route::group(['middleware' => [CheckSession::class, Cors::class, HandlePreflight::class]], function () {
+Route::group(['middleware' => [CheckSession::class, HandlePreflight::class, Cors::class]], function () {
     // returns the home page with all Users
     Route::get('/users', UserController::class .'@index')->name('users.index');
     // returns the form for adding a User
