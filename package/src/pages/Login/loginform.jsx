@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from "../../components/button";
-import Inputs from "../../components/inputs";
+import {Inputs, CurrencyInput} from "../../components/inputs";
 import { Link, redirect } from "react-router-dom";
 import styles from "./loginform.module.css";
 import { login } from './login_logic';
