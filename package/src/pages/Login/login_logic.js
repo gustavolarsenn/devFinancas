@@ -1,23 +1,26 @@
-export async function login(username, password) {
-    const response = await fetch('http://localhost:8000/csrf-token');
-    const csrfToken = await response.text();
+import axios from 'axios';
 
-    await fetch("http://localhost:8000/login", {
-        method: "POST",
+export async function login(username, password, csrfToken) {
+    console.log(csrfToken)
+    console.log(username)
+    console.log(password)
+    try {
+      const response = await axios.post('http://localhost:8000/login', {
+        username: username,
+        password: password,
+      }, { 
         headers: {
-            "Content-Type": "application/json",
-            'X-CSRF-TOKEN': csrfToken
+          'X-CSRF-TOKEN': csrfToken,
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
         },
-        body: JSON.stringify({
-            username: username,
-            password: password,
-        }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log("Success:", data);
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-    })
-}
+        withCredentials: true 
+      });
+      
+      return response.data.access;
+    } catch (error) {
+      console.error('Error:', error);
+      return false;
+    }
+  }

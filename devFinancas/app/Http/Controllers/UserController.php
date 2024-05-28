@@ -77,12 +77,16 @@ class UserController extends Controller
             // Store the user's information in the session
             $request->session()->put('username', $username);
 
+            return response()->json(['message' => 'Authentication successful', 'access' => true]);
             // Redirect the user to the dashboard or any other page
-            return redirect()->route('users.index');
+            // return redirect()->route('users.index');
         } else {
             // Authentication failed
             // Redirect the user back to the login page with an error message
-            return redirect()->route('login.login')->with('error', 'Invalid username or password');
+            return response()->json(['message' => 'Authentication failed', 'access' => false]);
+
+            // return false;
+            // return redirect()->route('login.login')->with('error', 'Invalid username or password');
         }
     }
 

@@ -1,13 +1,15 @@
 <?php
-
+header('Access-Control-Allow-Origin: http://localhost:3000');
+header('Access-Control-Allow-Headers: X-Requested-With, Authorization, Content-Type, X-CSRF-TOKEN');
+header('Access-Control-Allow-Credentials: true');
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
 
+use Illuminate\Support\Facades\Log;
+
 use App\Http\Middleware\CheckSession;
-use App\Http\Middleware\Cors;
-use App\Http\Middleware\HandlePreflight;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,7 +17,7 @@ Route::get('/', function () {
 
 // Group routes that require an active session
 
-Route::group(['middleware' => [CheckSession::class, HandlePreflight::class, Cors::class]], function () {
+Route::group(['middleware' => [CheckSession::class]], function () {
     // returns the home page with all Users
     Route::get('/users', UserController::class .'@index')->name('users.index');
     // returns the form for adding a User
@@ -69,10 +71,11 @@ Route::get('/register', UserController::class . '@create')->name('users.create')
 Route::post('/users', UserController::class .'@store')->name('users.store');
 Route::get('/csrf-token', function() {
     return csrf_token();
-})->middleware([Cors::class, HandlePreflight::class]);
+});
+
 // Login routes
-Route::get('/login', UserController::class .'@loginView')->name('login.index')->middleware([HandlePreflight::class, Cors::class]);
-Route::post('/login', UserController::class .'@login')->name('login.login')->middleware([HandlePreflight::class, Cors::class]);
+Route::get('/login', UserController::class .'@loginView')->name('login.index');
+Route::post('/login', UserController::class .'@login')->name('login.login');
 
 Route::fallback(function () {
     return redirect('/transaction');

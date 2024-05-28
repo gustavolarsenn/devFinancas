@@ -1,29 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Button from "../../components/button";
 import {Inputs, CurrencyInput} from "../../components/inputs";
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./loginform.module.css";
 import { login } from './login_logic';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
 
   const handleLogin = async () => {
-    const success = await login(username, password);
+    const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
+    const csrfToken = csrfTokenResponse.data;
+    console.log(csrfToken)
+    const success = await login(username, password, csrfToken);
     if (success) {
-      redirect("/dashboard")
-      console.log("Logged in successfully!")
-      // Redirecione para a página do painel ou faça algo
+      navigate("/dashboard");
+      console.log("Logged in successfully!");
     } else {
-      redirect("/register")
-      console.log("Failed to log in!")
-      // Mostre uma mensagem de erro ou faça algo
+      const failedLogin = document.getElementById('login-failed')
+      failedLogin.innerText = "Usuário não existe ou credenciais erradas!"
     }
   };
   return (
     <>
-    <meta name="csrf-token" content="{{ csrf_token() }}"></meta>
+    {/* <meta name="csrf-token" content="{{ csrf_token() }}"></meta> */}
       <div className={styles.loginpage}>
         <div className={styles.container}>
           <div className={styles.login}>
@@ -57,6 +61,9 @@ const LoginForm = () => {
                     Não tem conta ainda? <Link to="/registro">Registre-se</Link>
                   </p>
                 </div>
+                <p id="login-failed">
+
+                </p>
                 <div className={styles.btt}>
                   <Button name="Entrar" buttonStyle="open" onClick={handleLogin}></Button>
                 </div>
