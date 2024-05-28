@@ -3,7 +3,6 @@ import { IoHome } from "react-icons/io5";
 import { FaHistory } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
 
-
 export const NavbarData = [
     {
         title: 'Home',
@@ -17,7 +16,7 @@ export const NavbarData = [
     },
     {
         title: 'Histórico',
-        path: '/dashboard',
+        path: '/historico',
         icon: <FaHistory />
     },
     {

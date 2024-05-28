@@ -33,3 +33,20 @@
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
 }
 
+.input_category {
+    width: 350px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #D9D9D9;
+    background-color: white;
+    margin: 0;
+    padding: 15px;
+    font-size: 15px;
+}
+
+.input_category:focus {
+    outline: none;
+    border: 1px solid #004c9c; 
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+}
+

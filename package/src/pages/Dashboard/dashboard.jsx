@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Container from "../../components/container";
 import {FrameTable, Frame, FrameGraphic} from "../../components/frame";
 import Navbar from "../../components/navbar";
+import Table from "../../components/table";
 
 const Headers = styled.div`
     font-size: 1.5rem;
@@ -47,6 +48,25 @@ const InfRightPage  = styled.div `
 `;
 
 const Dashboard = () => {
+
+    const data = [
+        {"category": "Sáude", "saldo": "R$300,00"},
+        {"category": "Outros", "saldo": "R$35,00"},
+        {"category": "Academia", "saldo": "R$40,00"},
+        {"category": "Freelancer", "saldo": "R$29,00"},
+        {"category": "Freelancer", "saldo": "R$29,00"},
+        {"category": "Freelancer", "saldo": "R$29,00"},
+        {"category": "Freelancer", "saldo": "R$29,00"},
+        {"category": "Freelancer", "saldo": "R$29,00"},
+        {"category": "Freelancer", "saldo": "R$29,00"},
+        {"category": "Freelancer", "saldo": "R$29,00"},
+        {"category": "Freelancer", "saldo": "R$29,00"},
+        {"category": "Freelancer", "saldo": "R$29,00"},
+        {"category": "Freelancer", "saldo": "R$29,00"},
+        {"category": "Freelancer", "saldo": "R$29,00"},
+        {"category": "Comida", "saldo": "R$998,00"}
+    ]
+
     return (
         <Container>
             <Body>
@@ -58,19 +78,7 @@ const Dashboard = () => {
                 <Layout>
                     <LeftPage>
                         <FrameTable label="Registro/Histórico">
-                            <table>
-                                <tbody>
-                                    <td>
-                                        TESTE
-                                    </td>
-                                    <td>
-                                        TESTE
-                                    </td>
-                                    <td>
-                                        TESTE
-                                    </td>
-                                </tbody>
-                            </table>
+                            <Table data={data} />
                         </FrameTable>
                     </LeftPage>
                     <RightPage>

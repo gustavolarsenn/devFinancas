@@ -50,15 +50,32 @@ const Title = styled.p`
     
 `;
 
+const TableContainer = styled.div`
+    max-height: 520px;
+    overflow: hidden;
+    overflow-y: scroll;
+    
+
+    &::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+       background-color: #C3C3C3;
+       border-radius: 10px;
+    }
+
+`;
+
 const FrameTable = ({children, label}) => {
     return (
         <Table>
             <div>
                 <Title>{label}</Title>
             </div>
-            <div>
+            <TableContainer>
                 {children}
-            </div>
+            </TableContainer>
         </Table>
     )
 }

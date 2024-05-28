@@ -1,5 +1,5 @@
 import Button from "../../components/button";
-import Inputs from "../../components/inputs";
+import { Inputs, CurrencyInput } from "../../components/inputs";
 import styles from "./registerform.module.css";
 
 function RegisterForm() {

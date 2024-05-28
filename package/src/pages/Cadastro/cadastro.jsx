@@ -2,10 +2,12 @@ import styled from "styled-components";
 import Container from "../../components/container";
 import Navbar from "../../components/navbar";
 import { FrameRegister } from "../../components/frame";
-import Inputs from "../../components/inputs";
+import { Inputs, CurrencyInput } from "../../components/inputs";
 import Button from "../../components/button";
 import { CiCircleInfo } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa6";
+import Modal from "../../components/modal";
+import { useState } from "react";
 
 const Body = styled.div`
     background-color: #CBCBCB;
@@ -30,9 +32,8 @@ const Label = styled.label `
     padding: 20px 0 5px 20px;
     margin-left: 20px;
     display: flex;
-    font-size: 20px;
+    font-size: 1rem;
     color: #717274;
-    
 `;
 
 const Select = styled.select `
@@ -103,9 +104,25 @@ const Span = styled.span `
 
 
 const Cadastro = () => {
+    const [modal, setModal] = useState(false);
+
     return(
         <Container>
             <Body>
+                <Modal isOpen={modal} setOpenModal={() => setModal(!modal)}>
+                    <h1>Categorias</h1>
+                    <div>
+                    <label>Nome:</label>
+                    <Inputs 
+                        inputStyle="input_category"
+                        placeholder="Digite o nome da categoria..."
+                    />
+                    </div>
+                    <Button 
+                        name="Criar"
+                        buttonStyle="open"
+                    />
+                </Modal>
                 <Navbar />
                 <Headers> 
                     <h1>Cadastro</h1>
@@ -115,7 +132,7 @@ const Cadastro = () => {
                         <FrameRegister label="Entradas/Saidas">
                             <Form>
                                 <form>
-                                    <Label>Categoria:<Span><FaPlus /></Span></Label>
+                                    <Label>Categoria:<Span onClick={() => setModal(true)}><FaPlus /></Span></Label>
                                     <Select>    
                                         <Option disabled>Categoria</Option> 
                                     </Select>
@@ -125,8 +142,7 @@ const Cadastro = () => {
                                         <Option>Saida</Option>
                                     </Select>
                                     <Label>Valor: </Label>
-                                    <Inputs 
-                                        type="numeric"
+                                    <CurrencyInput
                                         inputStyle="input_register"
                                     />
                                     <Label>Descrição: </Label>
