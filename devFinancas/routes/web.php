@@ -6,6 +6,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
 
 use App\Http\Middleware\CheckSession;
+use App\Http\Middleware\Cors;
+use App\Http\Middleware\HandlePreflight;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,7 +15,7 @@ Route::get('/', function () {
 
 // Group routes that require an active session
 
-Route::group(['middleware' => [CheckSession::class]], function () {
+Route::group(['middleware' => [CheckSession::class, Cors::class, HandlePreflight::class]], function () {
     // returns the home page with all Users
     Route::get('/users', UserController::class .'@index')->name('users.index');
     // returns the form for adding a User
@@ -62,11 +64,15 @@ Route::group(['middleware' => [CheckSession::class]], function () {
 });
 
 Route::get('/register', UserController::class . '@create')->name('users.create');
+
 // adds a User to the database
 Route::post('/users', UserController::class .'@store')->name('users.store');
+Route::get('/csrf-token', function() {
+    return csrf_token();
+})->middleware([Cors::class, HandlePreflight::class]);
 // Login routes
-Route::get('/login', UserController::class .'@loginView')->name('login.index');
-Route::post('/login', UserController::class .'@login')->name('login.login');
+Route::get('/login', UserController::class .'@loginView')->name('login.index')->middleware([HandlePreflight::class, Cors::class]);
+Route::post('/login', UserController::class .'@login')->name('login.login')->middleware([HandlePreflight::class, Cors::class]);
 
 Route::fallback(function () {
     return redirect('/transaction');

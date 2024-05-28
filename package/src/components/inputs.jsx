@@ -1,10 +1,17 @@
 import styles from './inputs.module.css';
 import { NumericFormat } from 'react-number-format';
 
-const Inputs = ({type, value, inputStyle, placeholder}) => {
+const Inputs = ({type, value, inputStyle, placeholder, onChange}) => {
     return(
         <div>
-            <input type={type} value={value} className={`${styles.inputStyle} ${styles[inputStyle]}`} placeholder={placeholder} required/>
+            <input 
+                type={type} 
+                value={value} 
+                className={`${styles.inputStyle} ${styles[inputStyle]}`} 
+                placeholder={placeholder} 
+                onChange={e => onChange(e.target.value)} 
+                required
+            />
         </div>
     )
 }
