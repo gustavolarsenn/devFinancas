@@ -14,6 +14,8 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/registro" element={<Register />} />
+
+          {/* Rotas protegidas */}
           <Route path="/dashboard" element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
@@ -23,6 +25,7 @@ const AppRoutes = () => {
           <Route path="/historico" element={<ProtectedRoute />}>
             <Route path="/historico" element={<Historico />} />
           </Route>
+
         </Routes>
       </Router>
     </AuthProvider>

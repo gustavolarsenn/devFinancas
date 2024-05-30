@@ -32,7 +32,7 @@ const Navbar = () => {
             {NavbarData.map((item, index) => {
               return(
                 <li key={index} className={styles.navtext}>
-                  <Link to={item.path}>
+                  <Link to={item.path} onClick={item.onClick}>
                     {item.icon}
                     <span>{item.title}</span>
                   </Link>
