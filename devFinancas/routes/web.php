@@ -68,7 +68,7 @@ Route::group(['middleware' => [CheckSession::class]], function () {
 Route::get('/register', UserController::class . '@create')->name('users.create');
 
 // adds a User to the database
-Route::post('/users', UserController::class .'@store')->name('users.store');
+Route::post('/register', UserController::class .'@store')->name('users.store');
 Route::get('/csrf-token', function() {
     return csrf_token();
 });

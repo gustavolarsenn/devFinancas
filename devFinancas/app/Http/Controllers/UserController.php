@@ -28,8 +28,7 @@ class UserController extends Controller
             'password' => 'required'
           ]);
           User::create($request->all());
-          return redirect()->route('login.login')
-            ->with('success','User created successfully.');
+          return response()->json(['message' => 'User created successfully', 'access' => true]);
         //
     }
 

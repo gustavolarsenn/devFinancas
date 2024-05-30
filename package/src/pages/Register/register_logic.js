@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-export async function login(username, password, csrfToken) {
+export async function register(username, password, email, csrfToken) {
     try {
-      const response = await axios.post('http://localhost:8000/login', {
-        username: username,
+      const response = await axios.post('http://localhost:8000/register', {
+        name: username,
         password: password,
+        email: email
       }, { 
         headers: {
           'X-CSRF-TOKEN': csrfToken,
