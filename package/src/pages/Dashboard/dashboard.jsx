@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import Container from "../../components/container";
+import Spinner from '../../components/loadingSpinner';
 import {FrameTable, Frame, FrameGraphic} from "../../components/frame";
 import Navbar from "../../components/navbar";
 import Table from "../../components/table";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Headers = styled.div`
     font-size: 1.5rem;
@@ -67,12 +70,28 @@ const Dashboard = () => {
         {"category": "Comida", "saldo": "R$998,00"}
     ]
 
+    const [username, setUsername] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+      const fetchUsername = async () => {
+        const response = await axios.get('http://localhost:8000/auth', { withCredentials: true });
+        setUsername(response.data.username);
+        setIsLoading(false);
+      };
+  
+      fetchUsername();
+    }, []);
+
+    if (isLoading) {
+        return <Spinner />;
+      }
     return (
         <Container>
             <Body>
                 <Navbar />
                 <Headers>
-                    <h1>Bem-vindo, Felipe!</h1>
+                    <h1>Bem-vindo, {username}!</h1>
                     <SubTitle>É bom ter você de volta!</SubTitle>
                 </Headers>
                 <Layout>

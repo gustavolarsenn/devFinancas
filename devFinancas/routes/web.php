@@ -73,6 +73,8 @@ Route::get('/csrf-token', function() {
     return csrf_token();
 });
 
+Route::get('/auth', CheckSession::class .'@checkSession')->name('auth.checkSession');
+
 // Login routes
 Route::get('/login', UserController::class .'@loginView')->name('login.index');
 Route::post('/login', UserController::class .'@login')->name('login.login');

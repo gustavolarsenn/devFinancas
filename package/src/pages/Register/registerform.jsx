@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Button from "../../components/button";
 import { useNavigate } from "react-router-dom";
-import { Inputs, CurrencyInput } from "../../components/inputs";
+import { Inputs } from "../../components/inputs";
 import styles from "./registerform.module.css";
 import { register } from './register_logic';
 
