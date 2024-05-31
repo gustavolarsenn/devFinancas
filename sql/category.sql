@@ -4,6 +4,8 @@ CREATE TABLE categories (
     user_id BIGINT,
 );
 
+-- teste
+
 INSERT INTO categories (category_name, user_id) VALUES 
 ('Alimentação', 0),
 ('Transporte', 0),
