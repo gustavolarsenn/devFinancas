@@ -15,7 +15,7 @@ const Headers = styled.div`
 
 const Body = styled.div`
     background-color: #CBCBCB;
-    height: 100vh;
+    min-height: 100vh;
 `;
 
 const SubTitle = styled.h2 `

@@ -21,6 +21,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'category_name' => 'required|max:255',
+            'user_id'
           ]);
           Category::create($request->all());
           return redirect()->route('category.index')

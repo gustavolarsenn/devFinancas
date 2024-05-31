@@ -6,7 +6,7 @@ import { FrameRegister } from "../../components/frame";
 
 const Body = styled.div`
     background-color: #CBCBCB;
-    height: 100vh;
+    min-height: 100vh;
 `;
 
 const Headers = styled.div`

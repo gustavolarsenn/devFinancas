@@ -18,6 +18,7 @@ class Category extends Model
 
     protected $fillable = [
         'category_name',
+        'user_id'
     ];
 
     public $timestamps = false;

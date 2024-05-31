@@ -7,11 +7,14 @@ import Button from "../../components/button";
 import { CiCircleInfo } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa6";
 import Modal from "../../components/modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { createCategory } from "./cadastrocategory";
+
 
 const Body = styled.div`
     background-color: #CBCBCB;
-    height: 100vh;
+    min-height: 100vh;
 `;
 
 const Headers = styled.div`
@@ -104,7 +107,35 @@ const Span = styled.span `
 
 
 const Cadastro = () => {
+    
+    // Estado do Modal 
     const [modal, setModal] = useState(false);
+    
+    // Estado da categoria 
+    const [category, setCategory] = useState('');
+    const [userid, setUserid] = useState('');
+
+    useEffect(() => {
+        const fetchUserid = async () => {
+          const response = await axios.get('http://localhost:8000/auth', { withCredentials: true });
+          setUserid(response.data.user_id);
+        };
+    
+        fetchUserid();  
+      }, []);
+
+    const handleCategory = async () => {
+        const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
+        const csrfToken = csrfTokenResponse.data;
+        const success = await createCategory(category, userid, csrfToken);
+
+        if(success) {
+            console.log("Category created with sucess!");
+        } else {
+            console.log("Error!");
+        }
+        
+    }
 
     return(
         <Container>
@@ -112,16 +143,21 @@ const Cadastro = () => {
                 <Modal isOpen={modal} setOpenModal={() => setModal(!modal)}>
                     <h1>Categorias</h1>
                     <div>
-                    <label>Nome:</label>
-                    <Inputs 
-                        inputStyle="input_category"
-                        placeholder="Digite o nome da categoria..."
-                    />
+                        <form onSubmit={e => e.preventDefault()}>
+                            <label>Nome:</label>
+                                <Inputs 
+                                    inputStyle="input_category"
+                                    placeholder="Digite o nome da categoria..."
+                                    value={category}
+                                    onChange={setCategory}
+                                />
+                                <Button 
+                                    name="Criar"
+                                    buttonStyle="open"
+                                    onClick={handleCategory}
+                                />
+                        </form>
                     </div>
-                    <Button 
-                        name="Criar"
-                        buttonStyle="open"
-                    />
                 </Modal>
                 <Navbar />
                 <Headers> 
