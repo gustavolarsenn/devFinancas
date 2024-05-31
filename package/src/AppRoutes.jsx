@@ -1,5 +1,5 @@
 import Login from "./pages/Login/login";
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Register from "./pages/Register/register";
 import Dashboard from "./pages/Dashboard/dashboard";
 import Cadastro from "./pages/Cadastro/cadastro";

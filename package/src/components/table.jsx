@@ -33,7 +33,6 @@ const Row = ({ record }) => {
 }
 
 const Table = ({ data }) => {
-    const keys = Object.keys(data[0]);
     return (
         <TableStyle>
             <tbody>
