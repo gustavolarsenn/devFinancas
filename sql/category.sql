@@ -1,10 +1,8 @@
 CREATE TABLE categories (
     category_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     category_name VARCHAR(255),
-    user_id BIGINT,
+    user_id BIGINT
 );
-
--- teste
 
 INSERT INTO categories (category_name, user_id) VALUES 
 ('Alimentação', 0),
