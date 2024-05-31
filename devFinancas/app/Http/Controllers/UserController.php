@@ -75,6 +75,7 @@ class UserController extends Controller
             // Authentication successful
             // Store the user's information in the session
             $request->session()->put('username', $username);
+            $request->session()->put('user_id', $user->id);
 
             return response()->json(['message' => 'Authentication successful', 'access' => true]);
             // Redirect the user to the dashboard or any other page

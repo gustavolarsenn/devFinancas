@@ -31,6 +31,11 @@ class CheckSession
             return response()->json(['message' => 'Session not found. Please login.', 'access' => false]);
 
         }
-        return response()->json(['message' => 'Session found. Welcome back!', 'access' => true, 'username' => $request->session()->get('username')]);
+        return response()->json([
+            'message' => 'Session found. Welcome back!', 
+            'access' => true, 
+            'username' => $request->session()->get('username'),
+            "user_id" => $request->session()->get('user_id')
+        ]);
     }
 }
