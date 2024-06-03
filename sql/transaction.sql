@@ -8,4 +8,4 @@ CREATE TABLE transaction (
     value FLOAT,
     FOREIGN KEY (category_id) REFERENCES categories (category_id),
     FOREIGN KEY (user_id) REFERENCES users (id)
-);
+); 
