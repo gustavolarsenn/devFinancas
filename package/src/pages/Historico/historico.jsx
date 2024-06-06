@@ -3,7 +3,6 @@ import Container from "../../components/container";
 import styled from "styled-components";
 import { FrameRegister } from "../../components/frame";
 
-
 const Body = styled.div`
     background-color: #CBCBCB;
     min-height: 100vh;

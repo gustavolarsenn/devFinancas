@@ -32,7 +32,7 @@ Route::group(['middleware' => [CheckSession::class]], function () {
     Route::delete('/users/{user}', UserController::class .'@destroy')->name('users.destroy');
 
     // returns the home page with all Users
-    Route::get('/category', CategoryController::class .'@index')->name('category.index');
+    Route::get('/category', [CategoryController::class, 'index']);
     // returns the form for adding a User
     Route::get('/category/create', CategoryController::class . '@create')->name('category.create');
     // adds a User to the database

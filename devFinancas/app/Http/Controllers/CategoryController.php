@@ -10,8 +10,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('category.index', compact('categories'));
-        //
+        return response()->json($categories);
     }
 
     /**

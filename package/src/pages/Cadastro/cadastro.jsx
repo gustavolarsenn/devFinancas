@@ -9,7 +9,7 @@ import { FaPlus } from "react-icons/fa6";
 import Modal from "../../components/modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { createCategory } from "./cadastrocategory";
+import { create, show } from "./category";
 
 
 const Body = styled.div`
@@ -115,32 +115,57 @@ const Cadastro = () => {
     const [category, setCategory] = useState('');
     const [userid, setUserid] = useState('');
 
+    // Estado do option
+    const [categories, setCategories] = useState([]);
+
+    const [loading, setLoading] = useState(false);
+
+
+    const fetchData = async () => {
+        const data = await show();
+        setCategories(data);
+
+        console.log(data);
+    }
+
     useEffect(() => {
         const fetchUserid = async () => {
           const response = await axios.get('http://localhost:8000/auth', { withCredentials: true });
           setUserid(response.data.user_id);
         };
-    
+
         fetchUserid();  
+        fetchData();
       }, []);
 
-    const handleCategory = async () => {
-        const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
-        const csrfToken = csrfTokenResponse.data;
-        const success = await createCategory(category, userid, csrfToken);
+      const handleCategory = async () => {
+        try {
 
-        if(success) {
-            console.log("Category created with sucess!");
-        } else {
-            console.log("Error!");
+          setLoading(true); 
+          const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
+          const csrfToken = csrfTokenResponse.data;
+    
+          const success = await create(category, userid, csrfToken);
+    
+          if (!success) {
+            console.log("Category created with success!");
+            setModal(false);
+            window.location.reload();
+          } else {
+            console.log("Error in creating category!");
+          }
+        } catch (error) {
+          console.error('Erro ao criar categoria:', error);
+        } finally {
+            setLoading(false); 
         }
-        
-    }
+      };
 
     return(
         <Container>
             <Body>
                 <Modal isOpen={modal} setOpenModal={() => setModal(!modal)}>
+                    {loading && <p>Loading...</p>}
                     <h1>Categorias</h1>
                     <div>
                         <form onSubmit={e => e.preventDefault()}>
@@ -170,7 +195,12 @@ const Cadastro = () => {
                                 <form>
                                     <Label>Categoria:<Span onClick={() => setModal(true)}><FaPlus /></Span></Label>
                                     <Select>    
-                                        <Option disabled>Categoria</Option> 
+                                        <Option value="" disabled selected>Selecione uma categoria</Option>
+                                        {categories.filter(category => category.user_id === userid || category.user_id === 0).map((category) => (
+                                            <Option key={category.category_id} value={category.category_id}>
+                                                {category.category_name}
+                                            </Option>
+                                        ))}
                                     </Select>
                                     <Label>Tipo: </Label>
                                     <Select>

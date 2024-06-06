@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const createCategory = async (category_name, user_id, csrfToken) => {
+export const create = async (category_name, user_id, csrfToken) => {
     try {
         const response = await axios.post('http://localhost:8000/category', {
             category_name: category_name,
@@ -20,4 +20,20 @@ export const createCategory = async (category_name, user_id, csrfToken) => {
         console.error('Error:', error);
         return false;
     }
-}
+} 
+
+export const show = async () => {
+    try { 
+        const response = await axios.get('http://localhost:8000/category', {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        return false;
+    }
+} 
