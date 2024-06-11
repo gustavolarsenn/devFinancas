@@ -34,6 +34,7 @@ class Transaction extends Model
         'category_id',
         'user_id',
         'type',
+        'descricao',
         'date',
         'created_at',
         'value',

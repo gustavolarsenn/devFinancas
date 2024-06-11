@@ -2,6 +2,7 @@ CREATE TABLE transaction (
     transaction_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     category_id BIGINT,
     user_id BIGINT,
+    descricao VARCHAR(255),
     type VARCHAR(50),
     date DATETIME,
     created_at DATETIME,

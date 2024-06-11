@@ -26,8 +26,9 @@ class TransactionController extends Controller
             'category_id' => '',
             'user_id' => 'required',
             'type' => 'required',
+            'descricao' => 'required',
             'date' => 'required',
-            'created_at' => 'required',
+            'created_at' => 'required', 
             'value' => 'required',
           ]);
           Transaction::create($request->all());
@@ -45,8 +46,9 @@ class TransactionController extends Controller
             'category_id' => '',
             'user_id' => 'required',
             'type' => 'required',
+            'descricao' => 'required',
             'date' => 'required',
-            'created_at' => 'required',
+            'created_at' => 'required', 
             'value' => 'required',
           ]);
           $transaction = Transaction::find($id);

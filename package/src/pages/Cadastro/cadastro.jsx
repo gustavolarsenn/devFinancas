@@ -10,7 +10,7 @@ import Modal from "../../components/modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { create, show } from "./category";
-
+import { createTransaction } from "./transaction";
 
 const Body = styled.div`
     background-color: #CBCBCB;
@@ -118,7 +118,16 @@ const Cadastro = () => {
     // Estado do option
     const [categories, setCategories] = useState([]);
 
+    // Estado do Loading
     const [loading, setLoading] = useState(false);
+
+    // Transaction
+    const [transaction, setTransaction] = useState([]);
+
+    // const [selectedCategory, setSelectedCategory] = useState();
+    // const [type, setType] = useState('');
+    // const [price, setValue] = useState('');
+    // const [descricao, setDescricao] = useState('');
 
 
     const fetchData = async () => {
@@ -137,6 +146,39 @@ const Cadastro = () => {
         fetchUserid();  
         fetchData();
       }, []);
+
+      const removeCurrencyFormatting = (price) => {
+        return parseFloat(price.replace(/[R$ ]/g, '').replace(',', '.'));
+      };
+
+      const handleTransaction = async () => {
+        try {
+            const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
+            const csrfToken = csrfTokenResponse.data;
+
+            const tipo = document.getElementById("type").value;
+            const value = document.getElementById("price").value;
+            const descricao = document.getElementById("desc").value;
+            const category = document.getElementById("category").value;
+            const dateNow = new Date(Date.now());
+            
+            const date = dateNow.toISOString().slice(0, 19).replace('T', ' ');
+            const createdAt = dateNow.toISOString().slice(0, 19).replace('T', ' ');
+
+            const formattedValue = removeCurrencyFormatting(value);
+
+            const response = await createTransaction(category, userid, tipo, formattedValue, descricao, date, createdAt, csrfToken);
+
+            if(!response) {
+                console.log("Transaction created with success!");  
+            } else {
+                console.log("Error in creating transaction!");
+            }
+        
+        } catch (error) {
+            console.error('Erro ao criar transaction:', error);
+        }
+      }
 
       const handleCategory = async () => {
         try {
@@ -192,9 +234,12 @@ const Cadastro = () => {
                     <Layout>
                         <FrameRegister label="Entradas/Saidas">
                             <Form>
-                                <form>
+                                <form onSubmit={e => e.preventDefault()}>
                                     <Label>Categoria:<Span onClick={() => setModal(true)}><FaPlus /></Span></Label>
-                                    <Select>    
+                                    <Select 
+                                        id="category"
+                                        defaultValue=""
+                                    >   
                                         <Option value="" disabled selected>Selecione uma categoria</Option>
                                         {categories.filter(category => category.user_id === userid || category.user_id === 0).map((category) => (
                                             <Option key={category.category_id} value={category.category_id}>
@@ -203,21 +248,30 @@ const Cadastro = () => {
                                         ))}
                                     </Select>
                                     <Label>Tipo: </Label>
-                                    <Select>
-                                        <Option>Entrada</Option>    
-                                        <Option>Saida</Option>
+                                    <Select 
+                                        id="type" 
+                                        defaultValue="Entrada"
+                                    >  
+                                        <Option value="Entrada">Entrada</Option>    
+                                        <Option value="Saida">Saida</Option>
                                     </Select>
                                     <Label>Valor: </Label>
                                     <CurrencyInput
                                         inputStyle="input_register"
+                                        id="price"
                                     />
                                     <Label>Descrição: </Label>
-                                    <Desc placeholder="Descrição do registro..." required/>
+                                    <Desc 
+                                        id="desc" 
+                                        placeholder="Descrição do registro..." 
+                                        required
+                                    />
                                 </form>
                                 <BoxButton>
                                     <Button 
                                         name="Cadastrar" 
                                         buttonStyle="open"
+                                        onClick={handleTransaction}
                                     />
                                 </BoxButton>
                             </Form>

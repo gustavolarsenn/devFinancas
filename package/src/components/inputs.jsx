@@ -1,7 +1,7 @@
 import styles from './inputs.module.css';
 import { NumericFormat } from 'react-number-format';
 
-const Inputs = ({type, value, inputStyle, placeholder, onChange}) => {
+const Inputs = ({id, type, value, inputStyle, placeholder, onChange}) => {
     return(
         <div>
             <input 
@@ -10,13 +10,15 @@ const Inputs = ({type, value, inputStyle, placeholder, onChange}) => {
                 className={`${styles.inputStyle} ${styles[inputStyle]}`} 
                 placeholder={placeholder} 
                 onChange={e => onChange(e.target.value)} 
+                id={id}
                 required
             />
         </div>
     )
 }
 
-const CurrencyInput = ({ value, inputStyle}) => {
+const CurrencyInput = ({ id, value, inputStyle}) => {
+  
     return (
       <div>
         <NumericFormat
@@ -30,6 +32,7 @@ const CurrencyInput = ({ value, inputStyle}) => {
             decimalSeparator=','            
             thousandSeparator='.'
             className={`${styles.inputStyle} ${styles[inputStyle]}`}
+            id={id}
         />  
       </div>
     );

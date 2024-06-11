@@ -47,7 +47,7 @@ Route::group(['middleware' => [CheckSession::class]], function () {
     Route::delete('/category/{category}', CategoryController::class .'@destroy')->name('category.destroy');
 
     // returns the home page with all Users
-    Route::get('/transaction', TransactionController::class .'@index')->name('transaction.index');
+    Route::get('/transaction', [TransactionController::class, 'index']);
     // returns the form for adding a User
     Route::get('/transaction/create', TransactionController::class . '@create')->name('transaction.create');
     // adds a User to the database
