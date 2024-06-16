@@ -121,20 +121,9 @@ const Cadastro = () => {
     // Estado do Loading
     const [loading, setLoading] = useState(false);
 
-    // Transaction
-    const [transaction, setTransaction] = useState([]);
-
-    // const [selectedCategory, setSelectedCategory] = useState();
-    // const [type, setType] = useState('');
-    // const [price, setValue] = useState('');
-    // const [descricao, setDescricao] = useState('');
-
-
     const fetchData = async () => {
         const data = await show();
         setCategories(data);
-
-        console.log(data);
     }
 
     useEffect(() => {
@@ -240,7 +229,7 @@ const Cadastro = () => {
                                         id="category"
                                         defaultValue=""
                                     >   
-                                        <Option value="" disabled selected>Selecione uma categoria</Option>
+                                        <Option value="" disabled>Selecione uma categoria</Option>
                                         {categories.filter(category => category.user_id === userid || category.user_id === 0).map((category) => (
                                             <Option key={category.category_id} value={category.category_id}>
                                                 {category.category_name}

@@ -6,6 +6,8 @@ import Navbar from "../../components/navbar";
 import Table from "../../components/table";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { showTransaction } from "../Cadastro/transaction";
+import { show } from "../Cadastro/category";
 
 const Headers = styled.div`
     font-size: 1.5rem;
@@ -52,26 +54,33 @@ const InfRightPage  = styled.div `
 
 const Dashboard = () => {
 
-    const data = [
-        {"category": "Sáude", "saldo": "R$300,00"},
-        {"category": "Outros", "saldo": "R$35,00"},
-        {"category": "Academia", "saldo": "R$40,00"},
-        {"category": "Freelancer", "saldo": "R$29,00"},
-        {"category": "Freelancer", "saldo": "R$29,00"},
-        {"category": "Freelancer", "saldo": "R$29,00"},
-        {"category": "Freelancer", "saldo": "R$29,00"},
-        {"category": "Freelancer", "saldo": "R$29,00"},
-        {"category": "Freelancer", "saldo": "R$29,00"},
-        {"category": "Freelancer", "saldo": "R$29,00"},
-        {"category": "Freelancer", "saldo": "R$29,00"},
-        {"category": "Freelancer", "saldo": "R$29,00"},
-        {"category": "Freelancer", "saldo": "R$29,00"},
-        {"category": "Freelancer", "saldo": "R$29,00"},
-        {"category": "Comida", "saldo": "R$998,00"}
-    ]
-
     const [username, setUsername] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [transactions, setTransactions] = useState([]);
+
+    const fetchData = async () => {
+        try {
+            const res = await showTransaction();
+            setTransactions(res);
+
+            const categoryId = res.map(transaction => transaction.category_id);
+            const categories = await show(categoryId);
+
+            const updateTransaction = res.map(transaction => {
+                const category = categories.find(cat => cat.category_id === transaction.category_id);
+                return {
+                    ...transaction, 
+                    category_name: category ? category.category_name: "Categoria Inexistente"
+                };
+            });
+
+            setTransactions(updateTransaction);
+        } catch (error) {
+            console.error('Erro ao buscar dados de transação:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     useEffect(() => {
       const fetchUsername = async () => {
@@ -80,8 +89,11 @@ const Dashboard = () => {
         setIsLoading(false);
       };
   
+      fetchData();
       fetchUsername();
     }, []);
+
+    const keys = ["category_name", "value"];
 
     if (isLoading) {
         return <Spinner />;
@@ -97,7 +109,7 @@ const Dashboard = () => {
                 <Layout>
                     <LeftPage>
                         <FrameTable label="Registro/Histórico">
-                            <Table data={data} />
+                            <Table keys={keys} data={transactions} />
                         </FrameTable>
                     </LeftPage>
                     <RightPage>

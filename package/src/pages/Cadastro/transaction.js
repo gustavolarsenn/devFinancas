@@ -26,3 +26,19 @@ export const createTransaction = async (category_id, user_id, type, value, descr
         return false;
     }
 } 
+
+export const showTransaction = async () => {
+    try { 
+        const response = await axios.get('http://localhost:8000/transaction', {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        return false;
+    }
+} 

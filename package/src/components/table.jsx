@@ -11,35 +11,36 @@ const Td = styled.td`
     width: 100px;
     text-align: start;
     font-size: 25px;
-    color: #1F2731;
+    color: ${(props) => (props.transactionType === "Entrada" ? "green" : props.transactionType === "Saida" ? "red" : "#1F2731")};
 `; 
 
 const Tr = styled.tr`
-    
     &:hover {
         background-color: #e4e4e4;
     }
 
 `;
 
-const Row = ({ record }) => {
-    const keys = Object.keys(record);
+const Row = ({ record, keys }) => {
 
     return (
-        <Tr keys={record.id}>
-            { keys.map(key => <Td key={key}>{record[key]}</Td>) }
+        <Tr key={record.id} >
+            { keys.map(key => <Td key={key} transactionType={record.type}>{key === "value" ? `R$${record[key].toLocaleString()}` : record[key]}</Td>) }
         </Tr>
     )
 }
 
-const Table = ({ data }) => {
+const Table = ({ data, keys }) => {
     return (
         <TableStyle>
             <tbody>
-                { data.map(record => <Row record={record} />)}
+                {data.map((record, index) => (
+                    <Row key={record.id || index} record={record} keys={keys}/>
+                ))}
             </tbody>
         </TableStyle>
-    )
-}
+    );
+};
+
 
 export default Table;
