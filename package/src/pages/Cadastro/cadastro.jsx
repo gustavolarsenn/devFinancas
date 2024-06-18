@@ -230,7 +230,7 @@ const Cadastro = () => {
                                         defaultValue=""
                                     >   
                                         <Option value="" disabled>Selecione uma categoria</Option>
-                                        {categories.filter(category => category.user_id === userid || category.user_id === 0).map((category) => (
+                                        {categories && categories.filter(category => category.user_id === userid || category.user_id === 0).map((category) => (
                                             <Option key={category.category_id} value={category.category_id}>
                                                 {category.category_name}
                                             </Option>

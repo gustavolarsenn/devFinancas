@@ -34,7 +34,7 @@ const Table = ({ data, keys }) => {
     return (
         <TableStyle>
             <tbody>
-                {data.map((record, index) => (
+                {data && data.map((record, index) => (
                     <Row key={record.id || index} record={record} keys={keys}/>
                 ))}
             </tbody>
