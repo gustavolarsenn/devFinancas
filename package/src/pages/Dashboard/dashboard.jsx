@@ -109,7 +109,7 @@ const Dashboard = () => {
                 <Layout>
                     <LeftPage>
                         <FrameTable label="Registro/Histórico">
-                            <Table keys={keys} data={transactions} />
+                            <Table keys={keys} data={transactions}/>
                         </FrameTable>
                     </LeftPage>
                     <RightPage>

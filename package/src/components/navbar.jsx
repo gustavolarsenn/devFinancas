@@ -21,6 +21,7 @@ const Navbar = () => {
         <Link to="#" className={styles.menubars}>
           <FaBars onClick={showSidebar}/>
         </Link>
+        <h1>Finanças</h1>
       </div>
       <nav className={`${styles.navmenu} ${sidebar ? styles.active : styles.navmenu}`}>
         <ul className={styles.items}>

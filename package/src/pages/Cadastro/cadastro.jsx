@@ -32,20 +32,20 @@ const Layout = styled.div `
 `;
 
 const Label = styled.label `
-    padding: 20px 0 5px 20px;
-    margin-left: 20px;
+    padding: 20px 0 5px 0px;
+    margin-left: 0px;
     display: flex;
     font-size: 1rem;
     color: #717274;
 `;
 
 const Select = styled.select `
-    width: 90%;
+    width: 100%;
     height: 40px;
     border-radius: 5px;
     border: 1px solid #D9D9D9;
     background-color: white;
-    margin: 0 40px;
+    margin: 0;
     text-indent: 15px;
     font-size: 15px;
     color: #949494;
@@ -64,12 +64,12 @@ const BoxButton = styled.div `
 `;
 
 const Desc = styled.textarea `
-    width: 90%;
+    width: 100%;
     height: 150px;
     border-radius: 5px;
     border: 1px solid #D9D9D9;
     background-color: white;
-    margin: 0 40px;
+    margin: 0;
     padding: 15px;
     font-size: 15px;
 
@@ -82,13 +82,17 @@ const Desc = styled.textarea `
 
 const Option = styled.option `
     color: #949494;
-
 `;
 
-const Form = styled.div `
-    width: 1000px;
+const Form = styled.form `
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+`;
+
+const Divform = styled.div `
+    width: 100%;
     align-content: center;
-    margin: 0 400px;
     padding-top: 30px;
 `;
 
@@ -222,8 +226,8 @@ const Cadastro = () => {
                 </Headers>
                     <Layout>
                         <FrameRegister label="Entradas/Saidas">
-                            <Form>
-                                <form onSubmit={e => e.preventDefault()}>
+                            <Divform>
+                                <Form onSubmit={e => e.preventDefault()}>
                                     <Label>Categoria:<Span onClick={() => setModal(true)}><FaPlus /></Span></Label>
                                     <Select 
                                         id="category"
@@ -255,7 +259,7 @@ const Cadastro = () => {
                                         placeholder="Descrição do registro..." 
                                         required
                                     />
-                                </form>
+                                </Form>
                                 <BoxButton>
                                     <Button 
                                         name="Cadastrar" 
@@ -263,7 +267,7 @@ const Cadastro = () => {
                                         onClick={handleTransaction}
                                     />
                                 </BoxButton>
-                            </Form>
+                            </Divform>
                         </FrameRegister>
                     </Layout>
             </Body>

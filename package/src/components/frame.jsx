@@ -4,49 +4,53 @@ const Table = styled.div`
     background-color: white;    
     height: 600px;
     width: 90%;
-    border-radius: 10px;
-    margin: 30px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-   
+    border-radius: 5px;
+    margin: 0px 30px 30px 30px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);   
 `;
 
 const Register = styled.div`
     background-color: white;    
     height: 700px;
     width: 100%;
-    border-radius: 10px;
-    margin: 30px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    margin: 0px 30px 30px 30px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 `;
 
 const SmallFrame = styled.div`
     background-color: white;    
-    height: 250px;
+    height: 180px;
     width: 50%;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     margin: 0;
-    margin-top: 30px;
+`;
+
+const Content = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 const FrameGraph = styled.div`
     background-color: white;    
-    height: 320px;
+    height: 390px;
     width: 95%;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     margin: 0;
 `;
 
 const Title = styled.p`
-    font-size: 30px;
+    font-size: 1em;
     background-color: #1F2731;
-    padding: 1rem;
+    padding: 0.5rem;
     display: flex;
     justify-content: center;
     color: white;
-    border-radius: 10px 10px 0px 0px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 5px 5px 0px 0px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     
 `;
 
@@ -62,7 +66,7 @@ const TableContainer = styled.div`
 
     &::-webkit-scrollbar-thumb {
        background-color: #C3C3C3;
-       border-radius: 10px;
+       border-radius: 5px;
     }
 
 `;
@@ -112,9 +116,11 @@ const FrameRegister = ({children, label}) => {
             <div>
                 <Title>{label}</Title>
             </div>
-            <div>
-                {children}
-            </div>
+            <Content>
+                <div>
+                    {children}
+                </div>
+            </Content>
         </Register>
     )
 }

@@ -15,7 +15,7 @@ const LoginForm = () => {
   const handleLogin = async () => {
     const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
     const csrfToken = csrfTokenResponse.data;
-    console.log(csrfToken)
+ 
     const success = await login(username, password, csrfToken);
     if (success) {
       navigate("/dashboard");

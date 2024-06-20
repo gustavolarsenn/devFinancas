@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { SlOptions } from "react-icons/sl";
 
 const TableStyle = styled.table`
     width: 100%;
@@ -7,12 +8,23 @@ const TableStyle = styled.table`
 `;
 
 const Td = styled.td`
-    padding: 20px 20px 20px 60px;
-    width: 100px;
+    padding: 15px;
+    width: 50%;
     text-align: start;
-    font-size: 25px;
-    color: ${(props) => (props.transactionType === "Entrada" ? "green" : props.transactionType === "Saida" ? "red" : "#1F2731")};
+    font-size: 1rem;
+    color: ${(props) => (props.transactiontype === "Entrada" ? "green" : props.transactiontype === "Saida" ? "red" : "#1F2731")};
 `; 
+
+const Icontd = styled.td`
+    text-align: end;
+    padding-right: 15px;
+`;
+
+const Span = styled.span`
+    text-align: end;
+    padding-right: 15px;
+    cursor: pointer;
+`;
 
 const Tr = styled.tr`
     &:hover {
@@ -25,7 +37,12 @@ const Row = ({ record, keys }) => {
 
     return (
         <Tr key={record.id} >
-            { keys.map(key => <Td key={key} transactionType={record.type}>{key === "value" ? `R$${record[key].toLocaleString()}` : record[key]}</Td>) }
+            { keys.map(key => <Td key={key} transactiontype={record.type}>{key === "value" ? `R$${record[key].toLocaleString()}` : record[key]}</Td>) }
+            <Icontd>
+                <Span>
+                    <SlOptions />
+                </Span>
+            </Icontd>
         </Tr>
     )
 }
