@@ -13,15 +13,22 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
-    const csrfToken = csrfTokenResponse.data;
- 
-    const success = await login(username, password, csrfToken);
-    if (success) {
-      navigate("/dashboard");
-      console.log("Logged in successfully!");
-    } else {
-      setErrorMessage('Usuário não existe ou credenciais erradas!');
+    try {
+      const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
+      const csrfToken = csrfTokenResponse.data;
+   
+      const success = await login(username, password, csrfToken);
+      
+      if (success) {
+        navigate("/dashboard");
+        setUsername(""); 
+        setPassword(""); 
+        console.log("Logged in successfully");
+      } else {
+        setErrorMessage('Usuário não existe ou credenciais erradas!');
+      }
+    } catch (error) {
+      console.log("Error: ", error);
     }
   };
   return (
@@ -29,7 +36,7 @@ const LoginForm = () => {
       <div className={styles.loginpage}>
         <div className={styles.container}>
           <div className={styles.login}>
-            <form onSubmit={e => e.preventDefault()}>
+            <form>
               <div>
                 <h1>Login</h1>
               </div>

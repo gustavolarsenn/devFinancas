@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { SlOptions } from "react-icons/sl";
+import { useState } from "react";
 
 const TableStyle = styled.table`
     width: 100%;
@@ -35,12 +36,14 @@ const Tr = styled.tr`
 
 const Row = ({ record, keys }) => {
 
+    // const [options, setOptios] = useState(false);
+
     return (
         <Tr key={record.id} >
             { keys.map(key => <Td key={key} transactiontype={record.type}>{key === "value" ? `R$${record[key].toLocaleString()}` : record[key]}</Td>) }
             <Icontd>
                 <Span>
-                    <SlOptions />
+                    <SlOptions onClick={showOptions}/>
                 </Span>
             </Icontd>
         </Tr>

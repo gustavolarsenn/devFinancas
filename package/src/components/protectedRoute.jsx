@@ -4,7 +4,7 @@ import { AuthContext } from './authProvider';
 
 const ProtectedRoute = ({ path, element }) => {
   const { isAuthenticated } = useContext(AuthContext);
-  console.log(isAuthenticated)
+  console.log(isAuthenticated);
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 };
