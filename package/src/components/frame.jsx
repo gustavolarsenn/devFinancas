@@ -125,4 +125,17 @@ const FrameRegister = ({children, label}) => {
     )
 }
 
-export {FrameRegister, FrameTable, Frame, FrameGraphic};
+const FrameHistoric = ({children, label}) => {
+    return (
+        <Register>
+            <div>
+                <Title>{label}</Title>
+            </div>
+            <TableContainer>
+                {children}
+            </TableContainer>
+        </Register>
+    )
+}
+
+export {FrameRegister, FrameTable, Frame, FrameGraphic, FrameHistoric};

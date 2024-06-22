@@ -11,28 +11,16 @@ const Window = styled.div `
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.3);
 `;
 
 const Content = styled.div `
     background-color: white;
     padding: 16px 24px;
     width: 550px;
-    height: 250px;
-    border-radius: 10px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
-`;
-
-const Span = styled.span `
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    font-size: 20px;
-    float: right;
-
-    &:hover {
-        color: #949494;
-    }
+    height: 600px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
 `;
 
 const Children = styled.div `
@@ -44,6 +32,18 @@ const Children = styled.div `
     margin: 0;
 `;
 
+const Span = styled.span `
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: end;
+
+    &:hover {
+        color: #949494;
+    }
+`;
 
 
 const Modal = ({isOpen, setOpenModal, children}) => {

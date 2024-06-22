@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { create, show } from "./category";
 import { createTransaction } from "./transaction";
+import { Table } from "../../components/table";
 
 const Body = styled.div`
     background-color: #CBCBCB;
@@ -109,6 +110,9 @@ const Span = styled.span `
     }
 `;
 
+const DivLabel = styled.div `
+    padding-left: 10px;
+`;
 
 const Cadastro = () => {
     
@@ -201,16 +205,18 @@ const Cadastro = () => {
             <Body>
                 <Modal isOpen={modal} setOpenModal={() => setModal(!modal)}>
                     {loading && <p>Loading...</p>}
-                    <h1>Categorias</h1>
+                    <h1>Criar categoria</h1>
                     <div>
                         <form onSubmit={e => e.preventDefault()}>
-                            <label>Nome:</label>
-                                <Inputs 
-                                    inputStyle="input_category"
-                                    placeholder="Digite o nome da categoria..."
-                                    value={category}
-                                    onChange={setCategory}
-                                />
+                            <DivLabel>
+                                <label>Nome:</label>
+                                    <Inputs 
+                                        inputStyle="input_category"
+                                        placeholder="Digite o nome da categoria..."
+                                        value={category}
+                                        onChange={setCategory}
+                                    />
+                            </DivLabel>
                                 <Button 
                                     name="Criar"
                                     buttonStyle="open"
@@ -218,6 +224,7 @@ const Cadastro = () => {
                                 />
                         </form>
                     </div>
+                    <Table />
                 </Modal>
                 <Navbar />
                 <Headers> 

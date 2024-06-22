@@ -1,7 +1,11 @@
 import Navbar from "../../components/navbar";
 import Container from "../../components/container";
 import styled from "styled-components";
-import { FrameRegister } from "../../components/frame";
+import { FrameHistoric } from "../../components/frame";
+import {TableHistoric} from "../../components/table";
+import { showTransaction } from "../Cadastro/transaction";
+import { useEffect, useState } from "react";
+import { show } from "../Cadastro/category";
 
 const Body = styled.div`
     background-color: #CBCBCB;
@@ -23,6 +27,39 @@ const Layout = styled.div `
 `;
 
 const Historico = () => {
+
+    const [historic, setHistoric] = useState([]);
+
+    const fetchData = async () => {
+        try {
+            const res = await showTransaction();
+            setHistoric(res);
+            console.log(res);
+
+            const categoryId = res.map(transaction => transaction.category_id);
+            const categories = await show(categoryId);
+
+            const updateTransaction = res.map(transaction => {
+                const category = categories.find(cat => cat.category_id === transaction.category_id);
+                return {
+                    ...transaction, 
+                    category_name: category ? category.category_name: "Categoria Inexistente"
+                };
+            });
+
+            setHistoric(updateTransaction);
+        } catch (error) {
+            console.error('Erro ao buscar dados de transação:', error);
+        }
+
+    } 
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const keys = ["category_name", "value", "descricao", "type"];
+
     return (
         <Container>
             <Body>
@@ -31,9 +68,9 @@ const Historico = () => {
                     <h1>Histórico</h1>
                 </Headers> 
                 <Layout>
-                    <FrameRegister label="Histórico">
-
-                    </FrameRegister>    
+                    <FrameHistoric label="Histórico">
+                        <TableHistoric keys={keys} data={historic}/>
+                    </FrameHistoric>    
                 </Layout>
             </Body>
         </Container>

@@ -14,6 +14,13 @@ const Td = styled.td`
     text-align: start;
     font-size: 1rem;
     color: ${(props) => (props.transactiontype === "Entrada" ? "green" : props.transactiontype === "Saida" ? "red" : "#1F2731")};
+`;
+
+const TdHistoric = styled.td`
+    padding: 15px;
+    width: 30%;
+    text-align: start;
+    font-size: 1rem;
 `; 
 
 const Icontd = styled.td`
@@ -28,6 +35,7 @@ const Span = styled.span`
 `;
 
 const Tr = styled.tr`
+
     &:hover {
         background-color: #e4e4e4;
     }
@@ -43,7 +51,23 @@ const Row = ({ record, keys }) => {
             { keys.map(key => <Td key={key} transactiontype={record.type}>{key === "value" ? `R$${record[key].toLocaleString()}` : record[key]}</Td>) }
             <Icontd>
                 <Span>
-                    <SlOptions onClick={showOptions}/>
+                    <SlOptions />
+                </Span>
+            </Icontd>
+        </Tr>
+    )
+}
+
+const RowHistoric = ({ record, keys }) => {
+
+    // const [options, setOptios] = useState(false);
+
+    return (
+        <Tr key={record.id} >
+            { keys.map(key => <TdHistoric key={key} transactiontype={record.type}>{key === "value" ? `R$${record[key].toLocaleString()}` : record[key]}</TdHistoric>) }
+            <Icontd>
+                <Span>
+                    <SlOptions />
                 </Span>
             </Icontd>
         </Tr>
@@ -62,5 +86,19 @@ const Table = ({ data, keys }) => {
     );
 };
 
+const TableHistoric = ({ data, keys }) => {
+    return (
+        <TableStyle>
+            <tbody>
+                {data && data.map((record, index) => (
+                    <RowHistoric key={record.id || index} record={record} keys={keys}/>
+                ))}
+            </tbody>
+        </TableStyle>
+    );
+};
 
-export default Table;
+
+
+
+export {Table, TableHistoric};
