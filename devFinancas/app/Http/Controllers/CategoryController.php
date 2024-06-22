@@ -23,9 +23,7 @@ class CategoryController extends Controller
             'user_id'
           ]);
           Category::create($request->all());
-          return redirect()->route('category.index')
-            ->with('success','Category created successfully.');
-        //
+        return response()->json(['message' => 'Category created successfully']);
     }
 
     /**
@@ -38,8 +36,7 @@ class CategoryController extends Controller
           ]);
           $category = Category::find($id);
           $category->update($request->all());
-          return redirect()->route('category.index')
-            ->with('success', 'Category updated successfully.');
+        return response()->json(['message' => 'Category updated successfully']);
         //
     }
 
@@ -50,9 +47,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->delete();
-        return redirect()->route('category.index')
-          ->with('success', 'Category deleted successfully');
-        //
+        return response()->json(['message' => 'Category deleted successfully']);
     }
 
     // routes functions

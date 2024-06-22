@@ -44,9 +44,7 @@ class UserController extends Controller
           ]);
           $user = User::find($id);
           $user->update($request->all());
-          return redirect()->route('users.index')
-            ->with('success', 'User updated successfully.');
-        //
+          return response()->json(['message' => 'User updated successfully']);
     }
 
     /**
@@ -56,9 +54,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return redirect()->route('users.index')
-          ->with('success', 'User deleted successfully');
-        //
+          return response()->json(['message' => 'User deleted successfully']);
     }
 
     public function login(Request $request)
@@ -78,15 +74,10 @@ class UserController extends Controller
             $request->session()->put('user_id', $user->id);
 
             return response()->json(['message' => 'Authentication successful', 'access' => true]);
-            // Redirect the user to the dashboard or any other page
-            // return redirect()->route('users.index');
         } else {
             // Authentication failed
             // Redirect the user back to the login page with an error message
             return response()->json(['message' => 'Authentication failed', 'access' => false]);
-
-            // return false;
-            // return redirect()->route('login.login')->with('error', 'Invalid username or password');
         }
     }
 
@@ -96,7 +87,7 @@ class UserController extends Controller
         $request->session()->forget('username');
 
         // Redirect the user to the login page
-        return redirect()->route('login.index');
+        return response()->json(['message' => 'Logout successful']);
     }
 
     // routes functions

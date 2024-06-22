@@ -32,9 +32,7 @@ class TransactionController extends Controller
             'value' => 'required',
           ]);
           Transaction::create($request->all());
-          return redirect()->route('transaction.index')
-            ->with('success','Transaction created successfully.');
-        //
+          return response()->json(['message' => 'Transaction created successfully']);
     }
 
     /**
@@ -53,8 +51,7 @@ class TransactionController extends Controller
           ]);
           $transaction = Transaction::find($id);
           $transaction->update($request->all());
-          return redirect()->route('transaction.index')
-            ->with('success', 'Transaction updated successfully.');
+          return response()->json(['message' => 'Transaction updated successfully']);
         //
     }
 
@@ -65,9 +62,7 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::find($id);
         $transaction->delete();
-        return redirect()->route('transaction.index')
-          ->with('success', 'Transaction deleted successfully');
-        //
+        return response()->json(['message' => 'Transaction deleted successfully']);
     }
 
     // routes functions
