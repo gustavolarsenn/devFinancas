@@ -52,16 +52,43 @@ const InfRightPage  = styled.div `
     width: 100%;
 `;
 
+const BalanceDiv = styled.div `
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+`;
+
+const Balance = styled.h1`
+    color: ${props => {
+        const balanceNumeric = parseFloat(props.children.replace(/[^0-9.-]+/g, ""));
+        return balanceNumeric < 0 ? 'red' : 'green';
+    }};
+    font-size: 2.5rem;
+`;
+
 const Dashboard = () => {
 
     const [username, setUsername] = useState('');
     const [userid, setUserid] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [transactions, setTransactions] = useState([]);
+    const [balance, setBalance] = useState(0);
 
     const fetchData = async () => {
         try {
             const res = await showTransaction();
+
+            const balance = res.reduce((total, transaction) => {
+                if (transaction.type === "Saida") {
+                    return total - transaction.value;
+                } else {
+                    return total + transaction.value;
+                }
+            }, 0);
+
+            const formattedBalance = `R$${balance.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: true }) || '0,00'}`;
+            setBalance(formattedBalance);
 
             const categoryId = res.map(transaction => transaction.category_id);
             const categories = await show(categoryId);
@@ -75,6 +102,7 @@ const Dashboard = () => {
                     category_name: category ? category.category_name: "Categoria Inexistente"
                 };
             });
+
             setTransactions(updateTransaction);
         } catch (error) {
             console.error('Erro ao buscar dados de transação:', error);
@@ -107,7 +135,7 @@ const Dashboard = () => {
                 <Navbar />
                 <Headers>
                     <h1>Bem-vindo, {username}!</h1>
-                    <SubTitle>É bom ter você de volta!</SubTitle>
+                    <SubTitle>É bom ter você aqui!</SubTitle>
                 </Headers>
                 <Layout>
                     <LeftPage>
@@ -117,7 +145,13 @@ const Dashboard = () => {
                     </LeftPage>
                     <RightPage>
                         <SupRightPage>
-                            <Frame label="Saldo"></Frame>
+                        <Frame label="Saldo">
+                            <BalanceDiv>
+                                <Balance>
+                                    {balance}
+                                </Balance>
+                            </BalanceDiv>
+                        </Frame>
                             <Frame label="Mês anterior"></Frame>
                         </SupRightPage>
                         <InfRightPage>

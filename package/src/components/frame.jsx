@@ -90,7 +90,7 @@ const Frame= ({children, label}) => {
             <div>
                 <Title>{label}</Title>
             </div>
-            <div>
+            <div style={{marginTop: '45px'}}>
                 {children}
             </div>
         </SmallFrame>

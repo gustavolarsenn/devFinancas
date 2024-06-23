@@ -145,7 +145,7 @@ const Cadastro = () => {
       }, []);
 
       const removeCurrencyFormatting = (price) => {
-        return parseFloat(price.replace(/[R$ ]/g, '').replace(',', '.'));
+        return parseFloat(price.replace(/[R$ ]/g, '').replace(/\./g, '').replace(',', '.'));
       };
 
       const handleTransaction = async () => {
