@@ -27,6 +27,15 @@ const SmallFrame = styled.div`
     margin: 0;
 `;
 
+const Chart = styled.div`
+    background-color: white;    
+    height: 180px;
+    width: 50%;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 0;
+`;
+
 const Content = styled.div`
     display: flex;
     align-items: center;
@@ -96,6 +105,18 @@ const Frame= ({children, label}) => {
         </SmallFrame>
     )
 }
+const FrameChart = ({children, label}) => {
+    return (
+        <Chart>
+            <div>
+                <Title>{label}</Title>
+            </div>
+            <div>
+                {children}
+            </div>
+        </Chart>
+    )
+}
 
 const FrameGraphic = ({children, label}) => {
     return (
@@ -138,4 +159,4 @@ const FrameHistoric = ({children, label}) => {
     )
 }
 
-export {FrameRegister, FrameTable, Frame, FrameGraphic, FrameHistoric};
+export {FrameRegister, FrameTable, Frame, FrameGraphic, FrameChart, FrameHistoric};
