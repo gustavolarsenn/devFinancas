@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { create, show } from "./category";
 import { createTransaction } from "./transaction";
-import { Table } from "../../components/table";
+import { TableCategory } from "../../components/table";
 
 const Body = styled.div`
     background-color: #CBCBCB;
@@ -126,13 +126,17 @@ const Cadastro = () => {
     // Estado do option
     const [categories, setCategories] = useState([]);
 
+    // Estado do table category
+    const [catTable, setCatTable] = useState([]);
+
     // Estado do Loading
     const [loading, setLoading] = useState(false);
 
     const fetchData = async () => {
         const data = await show();
-        const category = data.filter(category => category.user_id === userid || category.user_id === 0);
-        setCategories(category);
+        const categoryFilter = data.filter(category => category.user_id === userid);
+        setCatTable(categoryFilter);
+        setCategories(data);
     }
 
     useEffect(() => {
@@ -228,7 +232,7 @@ const Cadastro = () => {
                                 />
                         </form>
                     </div>
-                    <Table keys={keys} data={categories}/>
+                    <TableCategory keys={keys} data={catTable}/>
                 </Modal>
                 <Navbar />
                 <Headers> 
@@ -245,7 +249,7 @@ const Cadastro = () => {
                                         defaultValue=""
                                     >   
                                         <Option value="" disabled>Selecione uma categoria</Option>
-                                        {categories && categories.map((category) => (
+                                        {categories && categories.filter(category => category.user_id === userid || category.user_id === 0).map((category) => (
                                             <Option key={category.category_id} value={category.category_id}>
                                                 {category.category_name}
                                             </Option>

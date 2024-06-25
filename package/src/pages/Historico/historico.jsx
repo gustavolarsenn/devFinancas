@@ -6,6 +6,7 @@ import {TableHistoric} from "../../components/table";
 import { showTransaction } from "../Cadastro/transaction";
 import { useEffect, useState } from "react";
 import { show } from "../Cadastro/category";
+import axios from "axios";
 
 const Body = styled.div`
     background-color: #CBCBCB;
@@ -27,19 +28,19 @@ const Layout = styled.div `
 `;
 
 const Historico = () => {
-
     const [historic, setHistoric] = useState([]);
+    const [userid, setUserid] = useState('');
+
 
     const fetchData = async () => {
         try {
             const res = await showTransaction();
-            setHistoric(res);
-            console.log(res);
-
             const categoryId = res.map(transaction => transaction.category_id);
             const categories = await show(categoryId);
 
-            const updateTransaction = res.map(transaction => {
+            const updateTransaction = res
+            .filter(history => history.user_id == userid)
+            .map(transaction => {
                 const category = categories.find(cat => cat.category_id === transaction.category_id);
                 return {
                     ...transaction, 
@@ -55,8 +56,14 @@ const Historico = () => {
     } 
 
     useEffect(() => {
+        const fetchUserId = async () => {
+            const response = await axios.get('http://localhost:8000/auth', { withCredentials: true });
+            setUserid(response.data.user_id);
+          };
+
+        fetchUserId();
         fetchData();
-    }, []);
+    }, [userid]);
 
     const keys = ["category_name", "value", "descricao", "type"];
 

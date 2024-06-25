@@ -17,8 +17,6 @@ import Chart from 'chart.js/auto';
 //     height: 400px; // Adjust based on your needs
 // `;
 
-
-
 const Headers = styled.div`
     font-size: 1.5rem;
     color: #1F2731;
@@ -75,7 +73,6 @@ const Balance = styled.h1`
 `;
 
 const Dashboard = () => {
-
     const [username, setUsername] = useState('');
     const [userid, setUserid] = useState('');
     const [isLoading, setIsLoading] = useState(true);
