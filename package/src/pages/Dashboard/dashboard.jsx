@@ -70,10 +70,7 @@ const BalanceDiv = styled.div `
 `;
 
 const Balance = styled.h1`
-    color: ${props => {
-        const balanceNumeric = parseFloat(props.children.replace(/[^0-9.-]+/g, ""));
-        return balanceNumeric < 0 ? 'red' : 'green';
-    }};
+    color: ${props => props.color};
     font-size: 2.5rem;
 `;
 
@@ -85,7 +82,8 @@ const Dashboard = () => {
     const [transactions, setTransactions] = useState([]);
     const [balance, setBalance] = useState(0);
     const [monthlyBalances, setMonthlyBalances] = useState([]);
-
+    const [color, setColor] = useState('green'); // Default color
+    
     const calculateMonthlyBalance = (transactions) => {
         const monthlyBalances = {};
       
@@ -121,21 +119,6 @@ const Dashboard = () => {
         try {
             const res = await showTransaction();
 
-            const balance = res.reduce((total, transaction) => {
-                if (transaction.type === "Saida") {
-                    return total - transaction.value;
-                } else {
-                    return total + transaction.value;
-                }
-            }, 0);
-
-            const monthlyBalances = calculateMonthlyBalance(res);
-
-            setMonthlyBalances(Object.entries(monthlyBalances).map(([data, value]) => ({data, value})));
-
-            const formattedBalance = `R$${balance.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: true }) || '0,00'}`;
-            setBalance(formattedBalance);
-
             const categoryId = res.map(transaction => transaction.category_id);
             const categories = await show(categoryId);
 
@@ -148,6 +131,22 @@ const Dashboard = () => {
                     category_name: category ? category.category_name: "Categoria Inexistente"
                 };
             });
+            const balance = updateTransaction.reduce((total, transaction) => {
+                if (transaction.type === "Saida") {
+                    return total - transaction.value;
+                } else {
+                    return total + transaction.value;
+                }
+            }, 0);
+            const monthlyBalances = calculateMonthlyBalance(updateTransaction);
+
+            setMonthlyBalances(Object.entries(monthlyBalances).map(([data, value]) => ({data, value})));
+
+            const formattedBalance = `R$${balance.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: true }) || '0,00'}`;
+            setBalance(formattedBalance);
+
+            const newColor = balance < 0 ? 'red' : 'green';
+            setColor(newColor);
 
             setTransactions(updateTransaction);
         } catch (error) {
@@ -253,7 +252,7 @@ const Dashboard = () => {
                         <SupRightPage>
                         <Frame label="Saldo">
                             <BalanceDiv>
-                                <Balance>
+                                <Balance color={color}>
                                     {balance}
                                 </Balance>
                             </BalanceDiv>

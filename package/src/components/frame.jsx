@@ -105,13 +105,13 @@ const Frame= ({children, label}) => {
         </SmallFrame>
     )
 }
-const FrameChart = ({children, label}) => {
+const FrameChart = ({children, label, color}) => {
     return (
         <Chart>
             <div>
                 <Title>{label}</Title>
             </div>
-            <div>
+            <div color={color}>
                 {children}
             </div>
         </Chart>
