@@ -131,7 +131,8 @@ const Cadastro = () => {
 
     const fetchData = async () => {
         const data = await show();
-        setCategories(data);
+        const category = data.filter(category => category.user_id === userid || category.user_id === 0);
+        setCategories(category);
     }
 
     useEffect(() => {
@@ -142,7 +143,7 @@ const Cadastro = () => {
 
         fetchUserid();  
         fetchData();
-      }, []);
+      }, [userid]);
 
       const removeCurrencyFormatting = (price) => {
         return parseFloat(price.replace(/[R$ ]/g, '').replace(/\./g, '').replace(',', '.'));
@@ -200,6 +201,9 @@ const Cadastro = () => {
         }
       };
 
+      const keys = ["category_name"];
+
+
     return(
         <Container>
             <Body>
@@ -224,7 +228,7 @@ const Cadastro = () => {
                                 />
                         </form>
                     </div>
-                    <Table />
+                    <Table keys={keys} data={categories}/>
                 </Modal>
                 <Navbar />
                 <Headers> 
@@ -241,7 +245,7 @@ const Cadastro = () => {
                                         defaultValue=""
                                     >   
                                         <Option value="" disabled>Selecione uma categoria</Option>
-                                        {categories && categories.filter(category => category.user_id === userid || category.user_id === 0).map((category) => (
+                                        {categories && categories.map((category) => (
                                             <Option key={category.category_id} value={category.category_id}>
                                                 {category.category_name}
                                             </Option>
