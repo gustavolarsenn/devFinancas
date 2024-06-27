@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Http\Middleware\CheckSession;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
+        // Pega a sessão 
+        $checkSession = new CheckSession();
+        $checkSession->checkSession($request);
+
+        // Pega o id do usuário logado 
+        $user_id = $request->session()->get("user_id");
+
+        $categories = Category::where('user_id', $user_id)->orWhere('user_id', 0)->get();
         return response()->json($categories);
     }
 

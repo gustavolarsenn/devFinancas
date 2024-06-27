@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { IoDocumentTextSharp } from "react-icons/io5";
 
 const Table = styled.div`
     background-color: white;    
@@ -12,6 +13,15 @@ const Table = styled.div`
 const Register = styled.div`
     background-color: white;    
     height: 700px;
+    width: 100%;
+    border-radius: 5px;
+    margin: 0px 30px 30px 30px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+`;
+
+const Historic = styled.div`
+    background-color: white;    
+    height: 570px;
     width: 100%;
     border-radius: 5px;
     margin: 0px 30px 30px 30px;
@@ -64,7 +74,7 @@ const Title = styled.p`
 `;
 
 const TableContainer = styled.div`
-    max-height: 520px;
+    max-height: 560px;
     overflow: hidden;
     overflow-y: scroll;
     
@@ -118,11 +128,11 @@ const FrameChart = ({children, label, color}) => {
     )
 }
 
-const FrameGraphic = ({children, label}) => {
+const FrameGraphic = ({children, label, icon}) => {
     return (
         <FrameGraph>
             <div>
-                <Title>{label}</Title>
+                <Title>{label}<IoDocumentTextSharp /></Title>
             </div>
             <div>
                 {children}
@@ -148,14 +158,14 @@ const FrameRegister = ({children, label}) => {
 
 const FrameHistoric = ({children, label}) => {
     return (
-        <Register>
+        <Historic>
             <div>
                 <Title>{label}</Title>
             </div>
             <TableContainer>
                 {children}
             </TableContainer>
-        </Register>
+        </Historic>
     )
 }
 

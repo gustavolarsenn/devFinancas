@@ -97,6 +97,22 @@ const Divform = styled.div `
     padding-top: 30px;
 `;
 
+const DivTable = styled.div `
+    width: 100%;
+    max-height: 350px;
+    padding-top: 20px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+       background-color: #C3C3C3;
+       border-radius: 5px;
+    }
+`;
+
 const Span = styled.span `
     padding: 0;
     cursor: pointer;
@@ -173,6 +189,7 @@ const Cadastro = () => {
 
             if(!response) {
                 console.log("Transaction created with success!");  
+                window.location.reload();
             } else {
                 console.log("Error in creating transaction!");
             }
@@ -232,7 +249,9 @@ const Cadastro = () => {
                                 />
                         </form>
                     </div>
-                    <TableCategory keys={keys} data={catTable}/>
+                    <DivTable>
+                        <TableCategory keys={keys} data={catTable}/>
+                    </DivTable>
                 </Modal>
                 <Navbar />
                 <Headers> 

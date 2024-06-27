@@ -10,13 +10,6 @@ import { showTransaction } from "../Cadastro/transaction";
 import { show } from "../Cadastro/category";
 import Chart from 'chart.js/auto';
 
-// Your existing styled components...
-
-// const ChartContainer = styled.div`
-//     width: 100%;
-//     height: 400px; // Adjust based on your needs
-// `;
-
 const Headers = styled.div`
     font-size: 1.5rem;
     color: #1F2731;
@@ -119,9 +112,7 @@ const Dashboard = () => {
             const categoryId = res.map(transaction => transaction.category_id);
             const categories = await show(categoryId);
 
-            const updateTransaction = res
-            .filter(transaction => transaction.user_id === userid)
-            .map(transaction => {
+            const updateTransaction = res.map(transaction => {
                 const category = categories.find(cat => cat.category_id === transaction.category_id);
                 return {
                     ...transaction, 
@@ -224,7 +215,7 @@ const Dashboard = () => {
   
       fetchData();
       fetchUsername();
-    }, [userid]);
+    }, [userid, balance]);
 
     const keys = ["category_name", "value"];
 

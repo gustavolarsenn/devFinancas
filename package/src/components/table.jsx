@@ -9,6 +9,26 @@ const TableStyle = styled.table`
     border-collapse: collapse;
 `;
 
+const TableCat = styled.table`
+    width: 100%;
+    max-height: 300px;
+    border-collapse: collapse;
+`;
+
+const Tbody = styled.tbody`
+    width: 100%;
+    max-height: 70%;
+
+    &::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+       background-color: #C3C3C3;
+       border-radius: 5px;
+    }
+`;
+
 const Td = styled.td`
     padding: 15px;
     width: 50%;
@@ -222,13 +242,13 @@ const TableHistoric = ({ data, keys }) => {
 
 const TableCategory = ({ data, keys }) => {
     return (
-        <TableStyle>
-            <tbody>
+        <TableCat>
+            <Tbody>
                 {data && data.map((record, index) => (
                     <RowCategory key={record.id || index} record={record} keys={keys}/>
                 ))}
-            </tbody>
-        </TableStyle>
+            </Tbody>
+        </TableCat>
     );
 };
 

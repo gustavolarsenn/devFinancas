@@ -38,9 +38,7 @@ const Historico = () => {
             const categoryId = res.map(transaction => transaction.category_id);
             const categories = await show(categoryId);
 
-            const updateTransaction = res
-            .filter(history => history.user_id == userid)
-            .map(transaction => {
+            const updateTransaction = res.map(transaction => {
                 const category = categories.find(cat => cat.category_id === transaction.category_id);
                 return {
                     ...transaction, 

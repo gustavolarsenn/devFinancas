@@ -4,17 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Http\Middleware\CheckSession;
 
 class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $transactions = Transaction::all();
+        // Pega a sessão
+        $checkSession = new CheckSession();
+        $checkSession->checkSession($request);
+
+        // Pega o id do usuário logado 
+        $user_id = $request->session()->get("user_id");
+        
+        $transactions = Transaction::where('user_id', $user_id)->get();
         return response()->json($transactions);        
-        //
     }
 
     /**
