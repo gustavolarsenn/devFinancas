@@ -38,6 +38,4 @@ const CurrencyInput = ({ id, value, inputStyle}) => {
     );
   };
   
-  
-
 export { Inputs, CurrencyInput };

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { SlOptions } from "react-icons/sl";
-import { FaRegTrashAlt } from "react-icons/fa";
 import { useState } from "react";
+import Modal from "../components/modal";
 
 const TableStyle = styled.table`
     width: 100%;
@@ -91,6 +91,9 @@ const Row = ({ record, keys }) => {
     const [optionsVisible, setOptionsVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
+    // Estado do Modal 
+    const [modal, setModal] = useState(false);
+
     const toggleOptions = (e) => {
         const rect = e.target.getBoundingClientRect();
         setMenuPosition({ x: rect.right, y: rect.bottom });
@@ -101,6 +104,7 @@ const Row = ({ record, keys }) => {
         // Implementar lógica de edição aqui
         console.log(`Editar registro com id ${record.id}`);
         setOptionsVisible(false); // Fechar menu após ação
+        setModal(!modal);
     };
 
     const handleDelete = () => {
@@ -122,6 +126,9 @@ const Row = ({ record, keys }) => {
                 <Span onClick={toggleOptions}>
                     <SlOptions />
                 </Span>
+                <Modal isOpen={modal} setOpenModal={() => setModal(!modal)}>
+                    
+                </Modal>
                 {optionsVisible && (
                     <OptionsContainer style={{ top: menuPosition.y, left: menuPosition.x }}>
                         <Option onClick={handleEdit}>Editar</Option>
@@ -190,16 +197,10 @@ const RowHistoric = ({ record, keys }) => {
     );
 }
 
-const RowCategory = ({ record, keys }) => {
-
-    // const handleDelete = () => {
-    //     // Implementar lógica de exclusão aqui
-    //     console.log(`Excluir registro com id ${record.id}`);
-    //     setOptionsVisible(false); // Fechar menu após ação
-    // };
+const RowCategory = ({ categoryid, record, keys, icon}) => {
 
     return (
-        <Tr key={record.id}>
+        <Tr categoryid={categoryid} key={record.id}>
             {keys.map((key) => (
                 <TdHistoric key={key} transactiontype={record.type}>
                     {key === 'value'
@@ -209,7 +210,7 @@ const RowCategory = ({ record, keys }) => {
             ))}
             <Icontd>
                 <Span>
-                    <FaRegTrashAlt />
+                    {icon}
                 </Span>
             </Icontd>
         </Tr>
@@ -240,12 +241,12 @@ const TableHistoric = ({ data, keys }) => {
     );
 };
 
-const TableCategory = ({ data, keys }) => {
+const TableCategory = ({ data, keys, icon}) => {
     return (
         <TableCat>
             <Tbody>
                 {data && data.map((record, index) => (
-                    <RowCategory key={record.id || index} record={record} keys={keys}/>
+                    <RowCategory categoryid={record.category_id} key={record.id || index} record={record} keys={keys} icon={icon} />
                 ))}
             </Tbody>
         </TableCat>

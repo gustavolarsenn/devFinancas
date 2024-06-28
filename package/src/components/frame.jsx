@@ -12,7 +12,7 @@ const Table = styled.div`
 
 const Register = styled.div`
     background-color: white;    
-    height: 700px;
+    height: 750px;
     width: 100%;
     border-radius: 5px;
     margin: 0px 30px 30px 30px;
@@ -103,7 +103,7 @@ const FrameTable = ({children, label}) => {
     )
 }
 
-const Frame= ({children, label}) => {
+const Frame = ({children, label}) => {
     return (
         <SmallFrame>
             <div>

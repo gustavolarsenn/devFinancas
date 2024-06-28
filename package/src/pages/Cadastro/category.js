@@ -37,3 +37,19 @@ export const show = async () => {
         return false;
     }
 } 
+
+export const deleteCategory = async (categoryId) => {
+    try {
+        const res = await axios.delete(`http://localhost:8000/category/${categoryId}`, {
+            mode: 'no-cors',
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }); 
+        return res.data;
+    } catch (error) {
+        console.error('Error: ', error);
+        throw error;
+    }
+}

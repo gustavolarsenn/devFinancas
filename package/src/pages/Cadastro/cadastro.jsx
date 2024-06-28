@@ -9,9 +9,11 @@ import { FaPlus } from "react-icons/fa6";
 import Modal from "../../components/modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { create, show } from "./category";
+import { create, deleteCategory, show } from "./category";
 import { createTransaction } from "./transaction";
 import { TableCategory } from "../../components/table";
+import { FaRegTrashAlt } from "react-icons/fa";
+
 
 const Body = styled.div`
     background-color: #CBCBCB;
@@ -148,6 +150,9 @@ const Cadastro = () => {
     // Estado do Loading
     const [loading, setLoading] = useState(false);
 
+    // Estado da data de criação
+    const [createdAt, setCreatedAt] = useState('');
+
     const fetchData = async () => {
         const data = await show();
         const categoryFilter = data.filter(category => category.user_id === userid);
@@ -181,7 +186,6 @@ const Cadastro = () => {
             const dateNow = new Date(Date.now());
             
             const date = dateNow.toISOString().slice(0, 19).replace('T', ' ');
-            const createdAt = dateNow.toISOString().slice(0, 19).replace('T', ' ');
 
             const formattedValue = removeCurrencyFormatting(value);
 
@@ -222,6 +226,18 @@ const Cadastro = () => {
         }
       };
 
+      const categoryId = categories.find(category => category.category_id);
+
+      const handleDelete = async (categoryId) => {
+        try {
+            const res = await deleteCategory(categoryId);
+            console.log(res);
+            setCategories(categories.filter(category => category.category_id !== categoryId));
+        } catch (error) {
+            console.error("Error: ", error);
+        }
+      }
+
       const keys = ["category_name"];
 
 
@@ -250,7 +266,7 @@ const Cadastro = () => {
                         </form>
                     </div>
                     <DivTable>
-                        <TableCategory keys={keys} data={catTable}/>
+                        <TableCategory id={categoryId} keys={keys} data={catTable} icon={<FaRegTrashAlt onClick={handleDelete}/>}/>
                     </DivTable>
                 </Modal>
                 <Navbar />
@@ -293,12 +309,21 @@ const Cadastro = () => {
                                         placeholder="Descrição do registro..." 
                                         required
                                     />
+                                    <Label>Data: </Label>
+                                    <Inputs
+                                        type="date"
+                                        inputStyle="input_register"
+                                        id="date"
+                                        value={createdAt}
+                                        onChange={setCreatedAt} // Adicione o onChange para atualizar createdAt
+                                />
                                 </Form>
                                 <BoxButton>
                                     <Button 
                                         name="Cadastrar" 
                                         buttonStyle="open"
                                         onClick={handleTransaction}
+                                        required
                                     />
                                 </BoxButton>
                             </Divform>
