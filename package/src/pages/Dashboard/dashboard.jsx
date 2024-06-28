@@ -169,6 +169,9 @@ const Dashboard = () => {
     const chartRef = useRef(null);
     const chartInstanceRef = useRef(null); // Step 1: Reference for the chart instance
 
+    const chartRef2 = useRef(null);
+    const chartInstanceRef2 = useRef(null); // Step 1: Reference for the chart instance
+
     useEffect(() => {
         // Directly work with the chart instance
         if (chartInstanceRef.current) {
@@ -186,6 +189,65 @@ const Dashboard = () => {
             gradientFill.addColorStop(0, 'rgba(61, 68, 101, 0.3)');
 
             chartInstanceRef.current = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: monthlyBalances.map((d) => d.data),
+                    datasets: [
+                        {
+                            data: monthlyBalances.map((d) => d.value),
+                            backgroundColor: gradientFill,
+                            borderColor: gradientStroke,
+                            pointBorderColor: gradientStroke,
+                            pointBackgroundColor: gradientStroke,
+                            pointHoverBackgroundColor: gradientStroke,
+                            pointHoverBorderColor: gradientStroke,
+                            pointBorderWidth: 10,
+                            pointHoverRadius: 10,
+                            pointRadius: 2,
+                            fill: true,
+                            borderWidth: 1,
+                            lineTension: 0,
+                        },
+                    ],
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            display: false,
+                        },
+                        x: {
+                            grid: {
+                                display: false,
+                            },
+                            display: false,
+                        },
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                },
+            });
+        }
+        if (chartInstanceRef2.current) {
+            chartInstanceRef2.current.destroy();
+        }
+
+        const ctx2 = chartRef2.current?.getContext('2d');
+        if (ctx2) {
+            var gradientStroke = ctx2.createLinearGradient(500, 0, 100, 0);
+            gradientStroke.addColorStop(1, 'rgba(128, 182, 244, 1)');
+            gradientStroke.addColorStop(0, 'rgba(61, 68, 101, 1)');
+
+            var gradientFill = ctx2.createLinearGradient(500, 0, 100, 0);
+            gradientFill.addColorStop(1, 'rgba(128, 182, 244, 0.3)');
+            gradientFill.addColorStop(0, 'rgba(61, 68, 101, 0.3)');
+
+            chartInstanceRef2.current = new Chart(ctx2, {
                 type: 'line',
                 data: {
                     labels: monthlyBalances.map((d) => d.data),
@@ -279,7 +341,10 @@ const Dashboard = () => {
                             </FrameChart>
                         </SupRightPage>
                         <InfRightPage>
-                            <FrameGraphic label="Relatório"></FrameGraphic>
+                            <FrameGraphic label="Relatório">
+                                <canvas ref={chartRef2}></canvas>
+
+                            </FrameGraphic>
                         </InfRightPage>
                     </RightPage>
                 </Layout>
