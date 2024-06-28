@@ -151,7 +151,7 @@ const Cadastro = () => {
     const [loading, setLoading] = useState(false);
 
     // Estado da data de criação
-    const [createdAt, setCreatedAt] = useState('');
+    const [date, setDate] = useState('');
 
     const fetchData = async () => {
         const data = await show();
@@ -185,7 +185,7 @@ const Cadastro = () => {
             const category = document.getElementById("category").value;
             const dateNow = new Date(Date.now());
             
-            const date = dateNow.toISOString().slice(0, 19).replace('T', ' ');
+            const createdAt = dateNow.toISOString().slice(0, 19).replace('T', ' ');
 
             const formattedValue = removeCurrencyFormatting(value);
 
@@ -314,8 +314,8 @@ const Cadastro = () => {
                                         type="date"
                                         inputStyle="input_register"
                                         id="date"
-                                        value={createdAt}
-                                        onChange={setCreatedAt} // Adicione o onChange para atualizar createdAt
+                                        value={date}
+                                        onChange={setDate} // Adicione o onChange para atualizar setDate
                                 />
                                 </Form>
                                 <BoxButton>
