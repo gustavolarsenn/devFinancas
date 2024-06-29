@@ -1,6 +1,6 @@
 import Container from '../../components/container';
 import RegisterForm from './registerform';
-import img from "../../img/logo.png";
+import img from "../../img/EasyFinance.png";
 import styles from "./register.module.css";
 
 const Register = () => {

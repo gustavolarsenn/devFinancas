@@ -60,6 +60,10 @@
   background-color: #596E88;
 }
 
+.navbar img {
+  width: 8%; 
+}
+
 .items {
   width: 100%;
 

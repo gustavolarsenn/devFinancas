@@ -7,6 +7,7 @@ import { useState } from "react";
 import { NavbarData } from "./NavbarData";
 import { IconContext } from "react-icons/lib";
 import styled from "styled-components";
+import img from "../img/logotransp.png";
 
 const HideButton = styled.div`
     position: absolute;
@@ -29,7 +30,7 @@ const Navbar = ({icon}) => {
         <Link to="#" className={styles.menubars}>
           <FaBars onClick={showSidebar}/>
         </Link>
-        <h1>Finances</h1>
+        <img src={img} alt="" />
         <HideButton>
           {icon}
         </HideButton>

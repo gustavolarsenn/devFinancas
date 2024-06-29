@@ -1,7 +1,7 @@
 import Container from "../../components/container";
 import LoginForm from "./loginform";
 import styles from "./login.module.css";
-import img from "../../img/logo.png";
+import img from "../../img/EasyFinance.png";
 
 const Login = () => {
   return (
