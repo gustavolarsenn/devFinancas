@@ -178,6 +178,13 @@ const Dashboard = () => {
                     category_name: category ? category.category_name : 'Categoria Inexistente',
                 };
             });
+
+            const actualMonthValues = updateTransaction.filter((transaction) => {
+                const date = new Date(transaction.date);
+                const actualDate = new Date();
+                return date.getMonth() === actualDate.getMonth() && date.getFullYear() === actualDate.getFullYear();
+            });
+
             const balance = updateTransaction.reduce((total, transaction) => {
                 if (transaction.type === 'Saida') {
                     return total - transaction.value;
@@ -186,7 +193,7 @@ const Dashboard = () => {
                 }
             }, 0);
             const monthlyBalances = calculateMonthlyBalance(updateTransaction);
-            const valuesByCategory = updateTransaction.reduce((acc, transaction) => {
+            const valuesByCategory = actualMonthValues.reduce((acc, transaction) => {
                 const category = transaction.category_name;
                 const value = transaction.type === 'Saida' ? -Math.abs(transaction.value) : transaction.value;
                 
@@ -291,8 +298,8 @@ const Dashboard = () => {
 
         const ctx2 = chartRef2.current?.getContext('2d');
         if (ctx2) {
-            const startColor = '#1BE7FF';
-            const endColor = '#114B5F';
+            const startColor = '#6976b8';
+            const endColor = '#3d4465';
             const uniqueCategoriesLength = new Set(valuesByCategory.map(d => d.category_name)).size;
             const steps = uniqueCategoriesLength;
 
@@ -440,7 +447,7 @@ const Dashboard = () => {
                             </FrameChart>
                         </SupRightPage>
                         <InfRightPage>
-                            <FrameGraphic label="Relatório">
+                            <FrameGraphic label="Relatório - Mês atual">
                                 <BlurWrapper isBlurred={isBlurred}>
                                     <canvas ref={chartRef2} height="370" width="100"></canvas>
                                 </BlurWrapper>

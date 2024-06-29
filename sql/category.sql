@@ -2,7 +2,7 @@ CREATE TABLE categories (
     category_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     category_name VARCHAR(255),
     user_id BIGINT,
-    active BIT
+    active BIT DEFAULT 1
 );
 
 INSERT INTO categories (category_name, user_id) VALUES 

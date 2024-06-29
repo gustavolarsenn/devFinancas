@@ -132,8 +132,18 @@ const FrameChart = ({children, label, color}) => {
 const FrameGraphic = ({children, label, icon}) => {
     return (
         <FrameGraph>
-            <div>
-                <Title>{label}<IoDocumentTextSharp /></Title>
+            <div style={{'width': '100%'}}>
+                <div>
+                    <Title >
+                        <div style={{'text-align': 'center', 'width': '97%'}}>
+                            {label}
+                        </div>
+                        <div style={{'width': '3%'}}>
+                            <IoDocumentTextSharp/>
+                        </div>
+                    </Title>
+                    
+                </div>
             </div>
             <div>
                 {children}
