@@ -109,7 +109,7 @@ const CategoryTr = styled.div`
     padding: 10px;
     border-bottom: 1px solid #e4e4e4;
 `
-const Row = ({ record, keys }) => {
+const Row = ({ record, keys, form }) => {
     const [optionsVisible, setOptionsVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
@@ -149,7 +149,7 @@ const Row = ({ record, keys }) => {
                     <SlOptions />
                 </Span>
                 <Modal isOpen={modal} setOpenModal={() => setModal(!modal)}>
-                    
+                    {form}
                 </Modal>
                 {optionsVisible && (
                     <OptionsContainer style={{ top: menuPosition.y, left: menuPosition.x }}>
@@ -238,12 +238,12 @@ const RowCategory = ({ categoryid, record, keys, icon}) => {
     );
 }
 
-const Table = ({ data, keys }) => {
+const Table = ({ data, keys, form }) => {
     return (
         <TableStyle>
             <tbody>
                 {data && data.map((record, index) => (
-                    <Row key={record.id || index} record={record} keys={keys}/>
+                    <Row key={record.id || index} record={record} keys={keys} form={form}/>
                 ))}
             </tbody>
         </TableStyle>

@@ -13,6 +13,7 @@ import { CiWarning } from "react-icons/ci";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { MdVisibility } from "react-icons/md";
 import { BsEyeSlashFill } from "react-icons/bs";
+import FormDash from './formdash';
 
 const Headers = styled.div`
     display: flex;
@@ -416,9 +417,8 @@ const Dashboard = () => {
                         <FrameTable label="Registro/Histórico">
                             <BlurWrapper isBlurred={isBlurred}>
                                 {transactions && transactions.length > 0 ? (
-                                    <Table keys={keys} data={transactions} />
-                                ) : (
-                                    
+                                    <Table keys={keys} data={transactions} form={<FormDash />}/>
+                                ) : (    
                                     <DivMessage><CiWarning /><NoRecordsMessage>Nenhum registro encontrado.</NoRecordsMessage></DivMessage>
                                 )}
                              </BlurWrapper>
