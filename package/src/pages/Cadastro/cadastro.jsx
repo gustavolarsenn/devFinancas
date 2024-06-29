@@ -148,8 +148,6 @@ const Cadastro = () => {
     // Estado do Loading
     const [loading, setLoading] = useState(false);
 
-
-
     // Step 1: Create a new Date object for the current date
     const currentDate = new Date();
 

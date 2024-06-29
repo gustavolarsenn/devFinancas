@@ -18,7 +18,7 @@ const Content = styled.div `
     background-color: white;
     padding: 16px 24px;
     width: 550px;
-    height: 600px;
+    height: ${(props) => props.height};
     border-radius: 5px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
 `;
@@ -46,11 +46,11 @@ const Span = styled.span `
 `;
 
 
-const Modal = ({isOpen, setOpenModal, children}) => {
+const Modal = ({isOpen, setOpenModal, children, height}) => {
     
     if(isOpen) {
         return(
-                <Window>
+                <Window height={height}>
                     <Content>
                         <Span onClick={setOpenModal}><IoClose /></Span>
                         <Children>

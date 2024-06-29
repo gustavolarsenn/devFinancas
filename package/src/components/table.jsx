@@ -10,26 +10,6 @@ const TableStyle = styled.table`
     border-collapse: collapse;
 `;
 
-const TableCat = styled.table`
-    width: 100%;
-    max-height: 300px;
-    border-collapse: collapse;
-`;
-
-const Tbody = styled.tbody`
-    width: 100%;
-    max-height: 70%;
-
-    &::-webkit-scrollbar {
-        width: 15px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-       background-color: #C3C3C3;
-       border-radius: 5px;
-    }
-`;
-
 const Td = styled.td`
     padding: 15px;
     width: 50%;
@@ -90,7 +70,7 @@ const Option = styled.div`
 const DivTable = styled.div `
     width: 100%;
     max-height: 350px;
-    padding-top: 20px;
+    padding-top: 10px;
     overflow: auto;
 
     &::-webkit-scrollbar {
@@ -148,7 +128,7 @@ const Row = ({ record, keys, form }) => {
                 <Span onClick={toggleOptions}>
                     <SlOptions />
                 </Span>
-                <Modal isOpen={modal} setOpenModal={() => setModal(!modal)}>
+                <Modal isOpen={modal} setOpenModal={() => setModal(!modal)} height="600px">
                     {form}
                 </Modal>
                 {optionsVisible && (
@@ -165,14 +145,6 @@ const Row = ({ record, keys, form }) => {
 const RowHistoric = ({ record, keys }) => {
     const [optionsVisible, setOptionsVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
-
-    // const optionClicked = document.getElementById("OptionsContainer");
-
-    // // const catchClick = (event) => {
-    // //     if(event.target !== optionClicked) {
-    // //         setOptionsVisible(false);
-    // //     }
-    // // }
 
     const toggleOptions = (e) => {
         const rect = e.target.getBoundingClientRect();
@@ -191,9 +163,6 @@ const RowHistoric = ({ record, keys }) => {
         console.log(`Excluir registro com id ${record.id}`);
         setOptionsVisible(false); // Fechar menu após ação
     };
-
-    
-    // document.addEventListener("click", catchClick);
 
     return (
         <Tr key={record.id} transactiontype={record.type}>
@@ -214,25 +183,6 @@ const RowHistoric = ({ record, keys }) => {
                         <Option onClick={handleDelete}>Excluir</Option>
                     </OptionsContainer>
                 )}
-            </Icontd>
-        </Tr>
-    );
-}
-
-const RowCategory = ({ categoryid, record, keys, icon}) => {
-    return (
-        <Tr categoryid={categoryid} key={record.id}>
-            {keys.map((key) => (
-                <TdHistoric key={key} transactiontype={record.type}>
-                    {key === 'value'
-                        ? `R$${record[key].toLocaleString()}`
-                        : record[key]}
-                </TdHistoric>
-            ))}
-            <Icontd>
-                <Span>
-                    {icon}
-                </Span>
             </Icontd>
         </Tr>
     );
@@ -267,12 +217,10 @@ const TableCategory = ({ catTable, handleDelete, keys }) => {
       <DivTable>
         {catTable.map((categoryItem) => (
           <div key={categoryItem.category_id}>
-            {/* Your existing rendering logic for each category item */}
             <CategoryTr>
               {categoryItem.category_name}
               <FaRegTrashAlt onClick={() => handleDelete(categoryItem.category_id)} style={{'cursor': 'pointer', 'color': 'red'}}/>
             </CategoryTr>
-            {/* Add any other elements you need to render for each category item */}
           </div>
         ))}
       </DivTable>

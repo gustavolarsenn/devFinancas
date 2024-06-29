@@ -68,13 +68,13 @@ const BalanceDiv = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 90%;
-    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
 `;
 
 const Balance = styled.h1`
     color: ${(props) => props.color};
-    font-size: 2.5rem;
+    font-size: 2rem;
 `;
 
 const DivMessage = styled.div`
@@ -417,7 +417,7 @@ const Dashboard = () => {
                         <FrameTable label="Registro/Histórico">
                             <BlurWrapper isBlurred={isBlurred}>
                                 {transactions && transactions.length > 0 ? (
-                                    <Table keys={keys} data={transactions} form={<FormDash />}/>
+                                    <Table keys={keys} data={transactions} id={transactions.transaction_id} form={<FormDash />}/>
                                 ) : (    
                                     <DivMessage><CiWarning /><NoRecordsMessage>Nenhum registro encontrado.</NoRecordsMessage></DivMessage>
                                 )}

@@ -1,36 +1,10 @@
 import styled from "styled-components";
-import Container from "../../components/container";
-import Navbar from "../../components/navbar";
-import { FrameRegister } from "../../components/frame";
 import { Inputs, CurrencyInput } from "../../components/inputs";
 import Button from "../../components/button";
-import { CiCircleInfo } from "react-icons/ci";
-import { FaPlus } from "react-icons/fa6";
-import Modal from "../../components/modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { create, deleteCategory, show } from "../Cadastro/category";
+import { show } from "../Cadastro/category";
 import { createTransaction } from "../Cadastro/transaction";
-import { TableCategory } from "../../components/table";
-
-const Body = styled.div`
-    background-color: #CBCBCB;
-    min-height: 100vh;
-`;
-
-const Headers = styled.div`
-    font-size: 1.5rem;
-    color: #1F2731;
-    margin: 30px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-`;
-
-const Layout = styled.div `
-    display: flex;
-    justify-content: center;
-`;
 
 const Label = styled.label `
     padding: 20px 0 5px 0px;
@@ -94,58 +68,14 @@ const Form = styled.form `
 const Divform = styled.div `
     width: 100%;
     align-content: center;
-    padding-top: 30px;
-`;
-
-const DivTable = styled.div `
-    width: 100%;
-    max-height: 350px;
-    padding-top: 20px;
-    overflow: auto;
-
-    &::-webkit-scrollbar {
-        width: 15px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-       background-color: #C3C3C3;
-       border-radius: 5px;
-    }
-`;
-
-const Span = styled.span `
-    padding: 0;
-    cursor: pointer;
-    font-size: 15px;
-    display:flex;
-    align-items: center;
-    color: #1F2731;
-
-    &:hover {
-        color: #949494;
-    }
-`;
-
-const DivLabel = styled.div `
-    padding-left: 10px;
 `;
 
 const FormDash = () => {
-    // Estado do Modal 
-    const [modal, setModal] = useState(false);
-    
-    // Estado da categoria 
-    const [category, setCategory] = useState('');
+
     const [userid, setUserid] = useState('');
 
     // Estado do option
     const [categories, setCategories] = useState([]);
-
-    // Estado do table category
-    const [catTable, setCatTable] = useState([]);
-
-    // Estado do Loading
-    const [loading, setLoading] = useState(false); 
 
     // Step 1: Create a new Date object for the current date
     const currentDate = new Date();
@@ -158,8 +88,6 @@ const FormDash = () => {
 
     const fetchData = async () => {
         const data = await show();
-        const categoryFilter = data.filter(category => category.user_id === userid);
-        setCatTable(categoryFilter);
         setCategories(data);
     }
 
@@ -211,9 +139,6 @@ const FormDash = () => {
       <Form onSubmit={(e) => e.preventDefault()}>
         <Label>
           Categoria:
-          <Span onClick={() => setModal(true)}>
-            <FaPlus />
-          </Span>
         </Label>
         <Select id="category" defaultValue="">
           <Option value="" disabled>
