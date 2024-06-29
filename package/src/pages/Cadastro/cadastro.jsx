@@ -245,7 +245,7 @@ const Cadastro = () => {
 
     
             // Chama a função deleteCategory para excluir a categoria
-            const res = await deleteCategory(categoryId, csrfToken);
+            const res = await deleteCategory(categoryId, userid, csrfToken);
             console.log('Categoria excluída:', res);
             window.location.reload();
     

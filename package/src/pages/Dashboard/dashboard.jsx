@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { showTransaction } from '../Cadastro/transaction';
-import { show } from '../Cadastro/category';
+import { showAll } from '../Cadastro/category';
 import Chart from 'chart.js/auto';
 import Container from '../../components/container';
 import Spinner from '../../components/loadingSpinner';
@@ -156,7 +156,7 @@ const Dashboard = () => {
             const res = await showTransaction();
 
             const categoryId = res.map((transaction) => transaction.category_id);
-            const categories = await show(categoryId);
+            const categories = await showAll(categoryId);
 
             const updateTransaction = res.map((transaction) => {
                 const category = categories.find((cat) => cat.category_id === transaction.category_id);
@@ -278,9 +278,18 @@ const Dashboard = () => {
 
         const ctx2 = chartRef2.current?.getContext('2d');
         if (ctx2) {
-            const colors = ctx2.createLinearGradient(500, 0, 100, 0);
-            colors.addColorStop(1, 'rgba(128, 182, 244, 1)');
-            colors.addColorStop(0, 'rgba(61, 68, 101, 1)');
+            const startColor = '#1BE7FF';
+            const endColor = '#114B5F';
+            const uniqueCategoriesLength = new Set(valuesByCategory.map(d => d.category_name)).size;
+            const steps = uniqueCategoriesLength;
+
+            const colors = generateColorRange(startColor, endColor, steps);
+            // console.log(colorRange);
+
+
+            // const colors = ctx2.createLinearGradient(500, 0, 100, 0);
+            // colors.addColorStop(1, 'rgba(128, 182, 244, 1)');
+            // colors.addColorStop(0, 'rgba(61, 68, 101, 1)');
 
             // Example colors array
             const datasets = valuesByCategory.map((d, index) => ({

@@ -17,10 +17,23 @@ class CategoryController extends Controller
         // Pega o id do usuário logado 
         $user_id = $request->session()->get("user_id");
 
-        $categories = Category::where('user_id', $user_id)->orWhere('user_id', 0)->get();
+        $categories = Category::where('active', 1)->where(function ($query) use ($user_id) {
+            $query->where('user_id', $user_id)->orWhere('user_id', 0);
+        })->get();
         return response()->json($categories);
     }
 
+    public function allCategories(Request $request){
+         // Pega a sessão 
+         $checkSession = new CheckSession();
+         $checkSession->checkSession($request);
+ 
+         // Pega o id do usuário logado 
+         $user_id = $request->session()->get("user_id");
+ 
+         $categories = Category::where('user_id', $user_id)->orWhere('user_id', 0)->get();
+         return response()->json($categories);
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -28,10 +41,20 @@ class CategoryController extends Controller
     {
         $request->validate([
             'category_name' => 'required|max:255',
-            'user_id'
-          ]);
-          Category::create($request->all());
-        return response()->json(['message' => 'Category created successfully']);
+            'user_id' => 'required'
+        ]);
+    
+        $category = Category::where('user_id', $request->user_id)
+                            ->where('category_name', $request->category_name)
+                            ->first();
+    
+        if ($category) {
+            $category->update(['active' => 1] + $request->all());
+        } else {
+            Category::create($request->all());
+        }
+    
+        return response()->json(['message' => 'Category processed successfully']);
     }
 
     /**
@@ -40,7 +63,9 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'category_name' => 'required|max:255',
+            'category_name',
+            'user_id',
+            'active'
           ]);
           $category = Category::find($id);
           $category->update($request->all());

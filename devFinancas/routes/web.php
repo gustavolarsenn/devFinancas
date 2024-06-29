@@ -34,6 +34,8 @@ Route::group(['middleware' => [CheckSession::class]], function () {
 
     // returns the home page with all Users
     Route::get('/category', [CategoryController::class, 'index']);
+
+    Route::get('/categoryAll', [CategoryController::class, 'allCategories']);
     // returns the form for adding a User
     Route::get('/category/create', CategoryController::class . '@create')->name('category.create');
     // adds a User to the database

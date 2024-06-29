@@ -22,6 +22,21 @@ export const create = async (category_name, user_id, csrfToken) => {
     }
 } 
 
+export const showAll = async () => {
+    try { 
+        const response = await axios.get('http://localhost:8000/categoryAll', {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        return false;
+    }
+} 
 export const show = async () => {
     try { 
         const response = await axios.get('http://localhost:8000/category', {
@@ -38,9 +53,14 @@ export const show = async () => {
     }
 } 
 
-export const deleteCategory = async (categoryId, csrfToken) => {
+export const deleteCategory = async (categoryId, user_id, csrfToken) => {
     try {
-        const res = await axios.delete(`http://localhost:8000/category/${categoryId}`,{
+        console.log(user_id)
+        const res = await axios.put(`http://localhost:8000/category/${categoryId}`,{
+            categoryId: categoryId,
+            user_id: user_id,
+            active: 0
+        }, {
             headers: {
                 'X-CSRF-TOKEN': csrfToken,
                 'Accept': 'application/json, text/plain, */*',
