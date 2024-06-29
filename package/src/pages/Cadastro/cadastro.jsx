@@ -247,6 +247,7 @@ const Cadastro = () => {
             // Chama a função deleteCategory para excluir a categoria
             const res = await deleteCategory(categoryId, csrfToken);
             console.log('Categoria excluída:', res);
+            window.location.reload();
     
             // Atualiza o estado das categorias após a exclusão bem-sucedida
             setCategories(categories.filter(category => category.category_id !== categoryId));
@@ -282,7 +283,7 @@ const Cadastro = () => {
                         </form>
                     </div>
                     <DivTable>
-                        <TableCategory categoryId={categories.category_id} keys={keys} data={catTable} icon={<FaRegTrashAlt onClick={() => handleDelete(categories.category_id)}/>}/>
+                    <TableCategory catTable={catTable} handleDelete={handleDelete} keys={keys} />
                     </DivTable>
                 </Modal>
                 <Navbar />

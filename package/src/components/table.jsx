@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { SlOptions } from "react-icons/sl";
 import { useState } from "react";
 import Modal from "../components/modal";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const TableStyle = styled.table`
     width: 100%;
@@ -34,7 +35,7 @@ const Td = styled.td`
     width: 50%;
     text-align: start;
     font-size: 1rem;
-    color: ${(props) => (props.transactiontype === "Entrada" ? "green" : props.transactiontype === "Saida" ? "red" : "#1F2731")};
+    color: ${(props) => (props.transactiontype === "Entrada" ? "green" : "red")};
 `;
 
 const TdHistoric = styled.td`
@@ -56,11 +57,11 @@ const Span = styled.span`
 `;
 
 const Tr = styled.tr`
-
+    background-color: ${(props) => (props.transactiontype === "Entrada" ? "rgba(0, 255, 0, 0.035)" : "rgba(255, 0, 0, 0.035)")};
+    border-bottom: 1px solid #e4e4e4;
     &:hover {
         background-color: #e4e4e4;
     }
-
 `;
 
 const OptionsContainer = styled.div`
@@ -86,7 +87,28 @@ const Option = styled.div`
     }
 `;
 
+const DivTable = styled.div `
+    width: 100%;
+    max-height: 350px;
+    padding-top: 20px;
+    overflow: auto;
 
+    &::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+       background-color: #C3C3C3;
+       border-radius: 5px;
+    }
+`;
+
+const CategoryTr = styled.div`
+    justify-content: space-between;
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid #e4e4e4;
+`
 const Row = ({ record, keys }) => {
     const [optionsVisible, setOptionsVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
@@ -114,9 +136,9 @@ const Row = ({ record, keys }) => {
     };
 
     return (
-        <Tr key={record.id}>
+        <Tr key={record.id} transactiontype={record.type}>
             {keys.map((key) => (
-                <Td key={key} transactiontype={record.type}>
+                <Td key={key} transactiontype={record.type} >
                     {key === 'value'
                         ? `R$${record[key].toLocaleString()}`
                         : record[key]}
@@ -174,7 +196,7 @@ const RowHistoric = ({ record, keys }) => {
     // document.addEventListener("click", catchClick);
 
     return (
-        <Tr key={record.id}>
+        <Tr key={record.id} transactiontype={record.type}>
             {keys.map((key) => (
                 <TdHistoric key={key} transactiontype={record.type}>
                     {key === 'value'
@@ -198,9 +220,6 @@ const RowHistoric = ({ record, keys }) => {
 }
 
 const RowCategory = ({ categoryid, record, keys, icon}) => {
-
-    
-
     return (
         <Tr categoryid={categoryid} key={record.id}>
             {keys.map((key) => (
@@ -243,16 +262,21 @@ const TableHistoric = ({ data, keys }) => {
     );
 };
 
-const TableCategory = ({ data, keys, icon}) => {
+const TableCategory = ({ catTable, handleDelete, keys }) => {
     return (
-        <TableCat>
-            <Tbody>
-                {data && data.map((record, index) => (
-                    <RowCategory categoryid={record.category_id} key={record.id || index} record={record} keys={keys} icon={icon} />
-                ))}
-            </Tbody>
-        </TableCat>
+      <DivTable>
+        {catTable.map((categoryItem) => (
+          <div key={categoryItem.category_id}>
+            {/* Your existing rendering logic for each category item */}
+            <CategoryTr>
+              {categoryItem.category_name}
+              <FaRegTrashAlt onClick={() => handleDelete(categoryItem.category_id)} style={{'cursor': 'pointer', 'color': 'red'}}/>
+            </CategoryTr>
+            {/* Add any other elements you need to render for each category item */}
+          </div>
+        ))}
+      </DivTable>
     );
-};
+  };
 
 export { Table, TableHistoric, TableCategory };

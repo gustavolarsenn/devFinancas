@@ -21,11 +21,12 @@ const Register = styled.div`
 
 const Historic = styled.div`
     background-color: white;    
-    height: 570px;
+    height: 595px;
     width: 100%;
     border-radius: 5px;
     margin: 0px 30px 30px 30px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+
 `;
 
 const SmallFrame = styled.div`
