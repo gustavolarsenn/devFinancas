@@ -199,6 +199,8 @@ const RowHistoric = ({ record, keys }) => {
 
 const RowCategory = ({ categoryid, record, keys, icon}) => {
 
+    
+
     return (
         <Tr categoryid={categoryid} key={record.id}>
             {keys.map((key) => (

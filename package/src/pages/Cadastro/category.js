@@ -38,18 +38,20 @@ export const show = async () => {
     }
 } 
 
-export const deleteCategory = async (categoryId) => {
+export const deleteCategory = async (categoryId, csrfToken) => {
     try {
-        const res = await axios.delete(`http://localhost:8000/category/${categoryId}`, {
-            mode: 'no-cors',
-            method: "post",
+        const res = await axios.delete(`http://localhost:8000/category/${categoryId}`,{
             headers: {
-                "Content-Type": "application/json"
-            }
-        }); 
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            withCredentials: true
+        });
         return res.data;
     } catch (error) {
         console.error('Error: ', error);
         throw error;
     }
-}
+};

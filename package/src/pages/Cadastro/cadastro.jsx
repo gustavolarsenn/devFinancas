@@ -234,20 +234,28 @@ const Cadastro = () => {
         }
       };
 
-      const categoryId = categories.find(category => category.category_id);
-
       const handleDelete = async (categoryId) => {
+
+          console.log(categoryId)
+
         try {
-            const res = await deleteCategory(categoryId);
-            console.log(res);
+            // Obtém o token CSRF
+            const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
+            const csrfToken = csrfTokenResponse.data;
+
+    
+            // Chama a função deleteCategory para excluir a categoria
+            const res = await deleteCategory(categoryId, csrfToken);
+            console.log('Categoria excluída:', res);
+    
+            // Atualiza o estado das categorias após a exclusão bem-sucedida
             setCategories(categories.filter(category => category.category_id !== categoryId));
         } catch (error) {
-            console.error("Error: ", error);
+            console.error('Erro ao excluir categoria:', error);
         }
-      }
+    };
 
       const keys = ["category_name"];
-
 
     return(
         <Container>
@@ -274,7 +282,7 @@ const Cadastro = () => {
                         </form>
                     </div>
                     <DivTable>
-                        <TableCategory id={categoryId} keys={keys} data={catTable} icon={<FaRegTrashAlt onClick={handleDelete}/>}/>
+                        <TableCategory categoryId={categories.category_id} keys={keys} data={catTable} icon={<FaRegTrashAlt onClick={() => handleDelete(categories.category_id)}/>}/>
                     </DivTable>
                 </Modal>
                 <Navbar />
