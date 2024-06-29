@@ -20,7 +20,7 @@ class TransactionController extends Controller
         // Pega o id do usuário logado 
         $user_id = $request->session()->get("user_id");
         
-        $transactions = Transaction::where('user_id', $user_id)->get();
+        $transactions = Transaction::where('user_id', $user_id)->orderBy("created_at", "asc")->get();
         return response()->json($transactions);        
     }
 

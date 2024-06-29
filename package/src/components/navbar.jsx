@@ -6,9 +6,17 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { NavbarData } from "./NavbarData";
 import { IconContext } from "react-icons/lib";
+import styled from "styled-components";
 
+const HideButton = styled.div`
+    position: absolute;
+    right: 3%;
+    font-size: 2rem;
+    padding: 10px;
+    cursor: pointer;
+`;
 
-const Navbar = () => {
+const Navbar = ({icon}) => {
 
   const [sidebar, setSidebar] = useState(false);
 
@@ -21,7 +29,10 @@ const Navbar = () => {
         <Link to="#" className={styles.menubars}>
           <FaBars onClick={showSidebar}/>
         </Link>
-        <h1>Finanças</h1>
+        <h1>Finances</h1>
+        <HideButton>
+          {icon}
+        </HideButton>
       </div>
       <nav className={`${styles.navmenu} ${sidebar ? styles.active : styles.navmenu}`}>
         <ul className={styles.items}>

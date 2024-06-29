@@ -12,6 +12,7 @@ import { Table } from '../../components/table';
 import { CiWarning } from "react-icons/ci";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { MdVisibility } from "react-icons/md";
+import { BsEyeSlashFill } from "react-icons/bs";
 
 const Headers = styled.div`
     display: flex;
@@ -21,7 +22,7 @@ const Headers = styled.div`
 `;
 
 const BlurWrapper = styled.div`
-  filter: ${({ isBlurred }) => (isBlurred ? 'blur(10px)' : 'none')};
+  filter: ${({ isBlurred }) => (isBlurred ? 'blur(25px)' : 'none')};
   transition: filter 0.3s;
 `;
 
@@ -32,14 +33,6 @@ const Body = styled.div`
 
 const SubTitle = styled.h2`
     font-weight: 250;
-`;
-
-const HideButton = styled.div`
-    position: absolute;
-    right: 3%;
-    font-size: 2.5rem;
-    padding: 10px;
-    cursor: pointer;
 `;
 
 const Layout = styled.div`
@@ -303,14 +296,7 @@ const Dashboard = () => {
             const steps = uniqueCategoriesLength;
 
             const colors = generateColorRange(startColor, endColor, steps);
-            // console.log(colorRange);
 
-
-            // const colors = ctx2.createLinearGradient(500, 0, 100, 0);
-            // colors.addColorStop(1, 'rgba(128, 182, 244, 1)');
-            // colors.addColorStop(0, 'rgba(61, 68, 101, 1)');
-
-            // Example colors array
             const datasets = valuesByCategory.map((d, index) => ({
                 label: d.category_name,
                 data: [d.value], // Wrap the value in an array since each dataset has a single data point
@@ -408,27 +394,24 @@ const Dashboard = () => {
 
     const keys = ['category_name', 'value'];
 
+    const iconVisible = () => {
+        return isBlurred ? <MdVisibility /> : <BsEyeSlashFill />;
+    };
+
     if (isLoading) {
         return <Spinner />;
     }
-
     return (
         <Container>
             <Body>
-                <Navbar />
+                <Navbar icon={<div onClick={toggleBlur}>{iconVisible()}</div>}/>
                 <Headers>
                     <div>
                         <h1>Bem-vindo, {username}!</h1>
                         <SubTitle>É bom ter você aqui!</SubTitle>
                     </div>
-                    <div>
-                        <HideButton>
-                            <MdVisibility onClick={toggleBlur} ></MdVisibility>
-                        </HideButton>
-                    </div>
                 </Headers>
                 <Layout>
-
                     <LeftPage>
                         <FrameTable label="Registro/Histórico">
                             <BlurWrapper isBlurred={isBlurred}>
