@@ -11,10 +11,18 @@ import Navbar from '../../components/navbar';
 import { Table } from '../../components/table';
 import { CiWarning } from "react-icons/ci";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { MdVisibility } from "react-icons/md";
+
 const Headers = styled.div`
+    display: flex;
     font-size: 1.5rem;
     color: #1f2731;
     margin: 30px;
+`;
+
+const BlurWrapper = styled.div`
+  filter: ${({ isBlurred }) => (isBlurred ? 'blur(10px)' : 'none')};
+  transition: filter 0.3s;
 `;
 
 const Body = styled.div`
@@ -24,6 +32,14 @@ const Body = styled.div`
 
 const SubTitle = styled.h2`
     font-weight: 250;
+`;
+
+const HideButton = styled.div`
+    position: absolute;
+    right: 3%;
+    font-size: 2.5rem;
+    padding: 10px;
+    cursor: pointer;
 `;
 
 const Layout = styled.div`
@@ -93,6 +109,9 @@ const Dashboard = () => {
     const [valuesByCategory, setValuesByCategory] = useState([]);
     const [color, setColor] = useState('green'); // Default color
 
+    const [isBlurred, setIsBlurred] = useState(false);
+
+    const toggleBlur = () => setIsBlurred(!isBlurred);
     function generateColorRange(startColor, endColor, steps) {
         let start = {
             r: parseInt(startColor.substring(1, 3), 16),
@@ -398,34 +417,50 @@ const Dashboard = () => {
             <Body>
                 <Navbar />
                 <Headers>
-                    <h1>Bem-vindo, {username}!</h1>
-                    <SubTitle>É bom ter você aqui!</SubTitle>
+                    <div>
+                        <h1>Bem-vindo, {username}!</h1>
+                        <SubTitle>É bom ter você aqui!</SubTitle>
+                    </div>
+                    <div>
+                        <HideButton>
+                            <MdVisibility onClick={toggleBlur} ></MdVisibility>
+                        </HideButton>
+                    </div>
                 </Headers>
                 <Layout>
+
                     <LeftPage>
                         <FrameTable label="Registro/Histórico">
-                            {transactions && transactions.length > 0 ? (
-                                <Table keys={keys} data={transactions} />
-                            ) : (
-                                
-                                <DivMessage><CiWarning /><NoRecordsMessage>Nenhum registro encontrado.</NoRecordsMessage></DivMessage>
-                            )}
+                            <BlurWrapper isBlurred={isBlurred}>
+                                {transactions && transactions.length > 0 ? (
+                                    <Table keys={keys} data={transactions} />
+                                ) : (
+                                    
+                                    <DivMessage><CiWarning /><NoRecordsMessage>Nenhum registro encontrado.</NoRecordsMessage></DivMessage>
+                                )}
+                             </BlurWrapper>
                         </FrameTable>
                     </LeftPage>
                     <RightPage>
                         <SupRightPage>
                             <Frame label="Saldo">
-                                <BalanceDiv>
-                                    <Balance color={color}>{balance}</Balance>
-                                </BalanceDiv>
+                                <BlurWrapper isBlurred={isBlurred}>
+                                    <BalanceDiv>
+                                        <Balance color={color}>{balance}</Balance>
+                                    </BalanceDiv>
+                                </BlurWrapper>
                             </Frame>
                             <FrameChart label="Meses anteriores">
-                                <canvas ref={chartRef}></canvas>
+                                <BlurWrapper isBlurred={isBlurred}>
+                                    <canvas ref={chartRef}></canvas>
+                                </BlurWrapper>
                             </FrameChart>
                         </SupRightPage>
                         <InfRightPage>
                             <FrameGraphic label="Relatório">
-                                <canvas ref={chartRef2} height="370" width="100"></canvas>
+                                <BlurWrapper isBlurred={isBlurred}>
+                                    <canvas ref={chartRef2} height="370" width="100"></canvas>
+                                </BlurWrapper>
                             </FrameGraphic>
                         </InfRightPage>
                     </RightPage>

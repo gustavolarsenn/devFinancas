@@ -12,8 +12,6 @@ import axios from "axios";
 import { create, deleteCategory, show } from "./category";
 import { createTransaction } from "./transaction";
 import { TableCategory } from "../../components/table";
-import { FaRegTrashAlt } from "react-icons/fa";
-
 
 const Body = styled.div`
     background-color: #CBCBCB;
