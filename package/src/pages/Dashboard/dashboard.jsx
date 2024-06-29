@@ -10,7 +10,7 @@ import { FrameTable, Frame, FrameGraphic, FrameChart } from '../../components/fr
 import Navbar from '../../components/navbar';
 import { Table } from '../../components/table';
 import { CiWarning } from "react-icons/ci";
-
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 const Headers = styled.div`
     font-size: 1.5rem;
     color: #1f2731;
@@ -90,7 +90,35 @@ const Dashboard = () => {
     const [transactions, setTransactions] = useState([]);
     const [balance, setBalance] = useState(0);
     const [monthlyBalances, setMonthlyBalances] = useState([]);
+    const [valuesByCategory, setValuesByCategory] = useState([]);
     const [color, setColor] = useState('green'); // Default color
+
+    function generateColorRange(startColor, endColor, steps) {
+        let start = {
+            r: parseInt(startColor.substring(1, 3), 16),
+            g: parseInt(startColor.substring(3, 5), 16),
+            b: parseInt(startColor.substring(5, 7), 16)
+        };
+        let end = {
+            r: parseInt(endColor.substring(1, 3), 16),
+            g: parseInt(endColor.substring(3, 5), 16),
+            b: parseInt(endColor.substring(5, 7), 16)
+        };
+        let step = {
+            r: (end.r - start.r) / (steps - 1),
+            g: (end.g - start.g) / (steps - 1),
+            b: (end.b - start.b) / (steps - 1),
+        };
+    
+        let colorRange = [];
+        for (let i = 0; i < steps; i++) {
+            let r = Math.round(start.r + (step.r * i));
+            let g = Math.round(start.g + (step.g * i));
+            let b = Math.round(start.b + (step.b * i));
+            colorRange.push(`#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`);
+        }
+        return colorRange;
+    }
 
     const calculateMonthlyBalance = (transactions) => {
         const monthlyBalances = {};
@@ -145,7 +173,18 @@ const Dashboard = () => {
                 }
             }, 0);
             const monthlyBalances = calculateMonthlyBalance(updateTransaction);
+            const valuesByCategory = updateTransaction.reduce((acc, transaction) => {
+                const category = transaction.category_name;
+                const value = transaction.type === 'Saida' ? -Math.abs(transaction.value) : transaction.value;
+                
+                if (!acc[category]) {
+                    acc[category] = 0;
+                }
+                acc[category] += value;
+                return acc;
+            }, {});
 
+            setValuesByCategory(Object.entries(valuesByCategory).map(([category_name, value]) => ({ category_name, value })));
             setMonthlyBalances(Object.entries(monthlyBalances).map(([data, value]) => ({ data, value })));
 
             const formattedBalance = `R$${balance.toLocaleString('pt-BR', {
@@ -239,57 +278,92 @@ const Dashboard = () => {
 
         const ctx2 = chartRef2.current?.getContext('2d');
         if (ctx2) {
-            var gradientStroke = ctx2.createLinearGradient(500, 0, 100, 0);
-            gradientStroke.addColorStop(1, 'rgba(128, 182, 244, 1)');
-            gradientStroke.addColorStop(0, 'rgba(61, 68, 101, 1)');
+            const colors = ctx2.createLinearGradient(500, 0, 100, 0);
+            colors.addColorStop(1, 'rgba(128, 182, 244, 1)');
+            colors.addColorStop(0, 'rgba(61, 68, 101, 1)');
 
-            var gradientFill = ctx2.createLinearGradient(500, 0, 100, 0);
-            gradientFill.addColorStop(1, 'rgba(128, 182, 244, 0.3)');
-            gradientFill.addColorStop(0, 'rgba(61, 68, 101, 0.3)');
-
+            // Example colors array
+            const datasets = valuesByCategory.map((d, index) => ({
+                label: d.category_name,
+                data: [d.value], // Wrap the value in an array since each dataset has a single data point
+                backgroundColor: colors[index % colors.length], // Cycle through colors array
+                borderColor: colors[index % colors.length],
+                borderWidth: 1,
+                barPercentage: 0.95,
+                categoryPercentage: 1,
+            }));
+        
             chartInstanceRef2.current = new Chart(ctx2, {
-                type: 'line',
+                type: 'bar',
                 data: {
-                    labels: monthlyBalances.map((d) => d.data),
-                    datasets: [
-                        {
-                            data: monthlyBalances.map((d) => d.value),
-                            backgroundColor: gradientFill,
-                            borderColor: gradientStroke,
-                            pointBorderColor: gradientStroke,
-                            pointBackgroundColor: gradientStroke,
-                            pointHoverBackgroundColor: gradientStroke,
-                            pointHoverBorderColor: gradientStroke,
-                            pointBorderWidth: 10,
-                            pointHoverRadius: 10,
-                            pointRadius: 2,
-                            fill: true,
-                            borderWidth: 1,
-                            lineTension: 0,
-                        },
-                    ],
+                    labels: [''], // Single label since each bar represents a category
+                    datasets: datasets,
                 },
                 options: {
                     plugins: {
                         legend: {
-                            display: false,
+                            display: true, // Ensure legend is displayed
+                            position: 'top', // Adjust based on your requirement
+                        },
+                        datalabels: {
+                            display: true,
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            borderRadius: 4,
+                            color: (context) => {
+                                const value = context.dataset.data[context.dataIndex];
+                                // Example condition: change color based on the value
+                                if (value >= 0) {
+                                    return '#73fa7a'; // Color for values greater than 1000
+                                } else {
+                                    return '#fa7375'; // Color for values less than or equal to 500
+                                }
+                            }, // Set the color of the label text
+                            anchor: 'auto', // Position the label at the a (top) of the bar
+                            align: 'end', // Align the label above the bar
+                            offset: 15,
+                            formatter: (value, context) => {
+                                return `R$${value.toLocaleString('pt-BR', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                    useGrouping: true,
+                                }) || '0,00'}`; // You can format the label value here if needed
+                            }
                         },
                     },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            display: false,
+                            display: false, // Adjust based on your requirement
+                            grid: {
+                                display: false,
+                            },
+                            border: {
+                                display: false,
+                            }
                         },
                         x: {
                             grid: {
                                 display: false,
                             },
-                            display: false,
+                            display: true, // Adjust based on your requirement
+                            border: {
+                                display: false,
+                            },
+                            
+                        },
+                    },
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 10,
+                            top: 10,
+                            bottom: 10,
                         },
                     },
                     responsive: true,
                     maintainAspectRatio: false,
                 },
+                plugins: [ChartDataLabels],
             });
         }
 
@@ -342,8 +416,7 @@ const Dashboard = () => {
                         </SupRightPage>
                         <InfRightPage>
                             <FrameGraphic label="Relatório">
-                                <canvas ref={chartRef2}></canvas>
-
+                                <canvas ref={chartRef2} height="370" width="100"></canvas>
                             </FrameGraphic>
                         </InfRightPage>
                     </RightPage>

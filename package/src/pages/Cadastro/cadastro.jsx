@@ -150,8 +150,16 @@ const Cadastro = () => {
     // Estado do Loading
     const [loading, setLoading] = useState(false);
 
+
+
+    // Step 1: Create a new Date object for the current date
+    const currentDate = new Date();
+
+    // Step 2: Format the date to "YYYY-MM-DD"
+    const formattedDate = currentDate.toISOString().split('T')[0];
+
     // Estado da data de criação
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState(formattedDate);
 
     const fetchData = async () => {
         const data = await show();
