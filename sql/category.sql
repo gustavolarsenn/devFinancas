@@ -5,7 +5,7 @@ CREATE TABLE categories (
     active BIT DEFAULT 1
 );
 
-INSERT INTO categories (category_name, user_id) VALUES 
+INSERT INTO categories (category_name, user_id, active) VALUES 
 ('Alimentação', 0, 1),
 ('Transporte', 0, 1),
 ('Moradia', 0, 1),

@@ -39,7 +39,7 @@ class TransactionController extends Controller
             'value' => 'required',
           ]);
           Transaction::create($request->all());
-          return response()->json(['message' => 'Transaction created successfully']);
+          return response()->json(['message' => 'Transaction created successfully'], 201);
     }
 
     /**

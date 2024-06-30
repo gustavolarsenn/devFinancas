@@ -50,11 +50,11 @@ class CategoryController extends Controller
     
         if ($category) {
             $category->update(['active' => 1] + $request->all());
+            return response()->json(['message' => 'Category updated successfully']);
         } else {
             Category::create($request->all());
+            return response()->json(['message' => 'Category created successfully'], 201);
         }
-    
-        return response()->json(['message' => 'Category processed successfully']);
     }
 
     /**
