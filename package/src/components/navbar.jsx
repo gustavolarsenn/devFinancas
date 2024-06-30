@@ -30,7 +30,7 @@ const Navbar = ({icon}) => {
         <Link to="#" className={styles.menubars}>
           <FaBars onClick={showSidebar}/>
         </Link>
-        <img src={img} alt="" />
+        <img src={img} alt="" style={{margin: '10px 0 0 0'}}/>
         <HideButton>
           {icon}
         </HideButton>
@@ -49,10 +49,11 @@ const Navbar = ({icon}) => {
                     {item.icon}
                     <span>{item.title}</span>
                   </Link>
+                  
                 </li>
               )
             })}
-            
+        <img src={img} alt="" style={{height: '150px', position: 'absolute', bottom: '-20px', left: '47px'}}/> {/* GAMBIARRA KKKKK*/}
         </ul>
       </nav>
       </IconContext.Provider>

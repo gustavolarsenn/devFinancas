@@ -5,6 +5,7 @@ import { showTransaction } from '../Cadastro/transaction';
 import { showAll } from '../Cadastro/category';
 import Chart from 'chart.js/auto';
 import Container from '../../components/container';
+import {Filter, FilterContainer, FilterElement } from "../../components/filter";
 import Spinner from '../../components/loadingSpinner';
 import { FrameTable, Frame, FrameGraphic, FrameChart } from '../../components/frame';
 import Navbar from '../../components/navbar';
@@ -103,7 +104,23 @@ const Dashboard = () => {
     const [valuesByCategory, setValuesByCategory] = useState([]);
     const [color, setColor] = useState('green'); // Default color
 
+    const [possibleYears, setPossibleYears] = useState([]);
+    const [possibleMonths, setPossibleMonths] = useState([]);
+    const [selectedYear, setSelectedYear] = useState('all'); // State for selected year filter
+    const [selectedMonth, setSelectedMonth] = useState('all'); // State for selected month filter
+
     const [isBlurred, setIsBlurred] = useState(false);
+
+    // Handler for year filter change
+    const handleYearFilterChange = (year) => {
+        console.log(year);
+        setSelectedYear(year);
+    };
+
+    // Handler for month filter change
+    const handleMonthFilterChange = (month) => {
+        setSelectedMonth(month);
+    };
 
     const toggleBlur = () => setIsBlurred(!isBlurred);
     function generateColorRange(startColor, endColor, steps) {
@@ -166,12 +183,13 @@ const Dashboard = () => {
 
     const fetchData = async () => {
         try {
+            
             const res = await showTransaction();
 
             const categoryId = res.map((transaction) => transaction.category_id);
             const categories = await showAll(categoryId);
 
-            const updateTransaction = res.map((transaction) => {
+            let updateTransaction = res.map((transaction) => {
                 const category = categories.find((cat) => cat.category_id === transaction.category_id);
                 return {
                     ...transaction,
@@ -179,11 +197,35 @@ const Dashboard = () => {
                 };
             });
 
-            const actualMonthValues = updateTransaction.filter((transaction) => {
-                const date = new Date(transaction.date);
-                const actualDate = new Date();
-                return date.getMonth() === actualDate.getMonth() && date.getFullYear() === actualDate.getFullYear();
-            });
+            const monthlyBalances = calculateMonthlyBalance(updateTransaction); // NÃO É AFETADO PELOS FILTROS
+
+            if (selectedYear && selectedYear !== 'all') {
+                updateTransaction = updateTransaction.filter(transaction => new Date(transaction.date).getFullYear() == selectedYear);
+            }
+
+            if (selectedMonth && selectedMonth !== 'all') {
+                updateTransaction = updateTransaction.filter(transaction => new Date(transaction.date).getMonth() == selectedMonth);
+            }
+
+            const possibleYears = [...new Set(updateTransaction.map(transaction => new Date(transaction.date).getFullYear()))]
+            .sort((a, b) => a - b)
+            .map(year => ({ value: year, label: year }));
+
+            const possibleMonths = [...new Set(updateTransaction.map(transaction => new Date(transaction.date).getMonth()))]
+                .sort((a, b) => a - b)
+                .map(month => ({ value: month, label: month + 1 })); // Adjust for zero-indexed months and for readability    
+
+            setPossibleYears([...possibleYears]);
+            setPossibleMonths([...possibleMonths]);
+
+            let actualMonthValues = updateTransaction;
+            if (selectedMonth === 'all' && selectedYear === 'all') {
+                actualMonthValues = updateTransaction.filter((transaction) => {
+                    const date = new Date(transaction.date);
+                    const actualDate = new Date();
+                    return date.getMonth() === actualDate.getMonth() && date.getFullYear() === actualDate.getFullYear();
+                });
+            } 
 
             const balance = updateTransaction.reduce((total, transaction) => {
                 if (transaction.type === 'Saida') {
@@ -192,7 +234,6 @@ const Dashboard = () => {
                     return total + transaction.value;
                 }
             }, 0);
-            const monthlyBalances = calculateMonthlyBalance(updateTransaction);
             const valuesByCategory = actualMonthValues.reduce((acc, transaction) => {
                 const category = transaction.category_name;
                 const value = transaction.type === 'Saida' ? -Math.abs(transaction.value) : transaction.value;
@@ -303,7 +344,11 @@ const Dashboard = () => {
             const uniqueCategoriesLength = new Set(valuesByCategory.map(d => d.category_name)).size;
             const steps = uniqueCategoriesLength;
 
-            const colors = generateColorRange(startColor, endColor, steps);
+
+            var colors = ctx.createLinearGradient(500, 0, 100, 0);
+            colors.addColorStop(1, 'rgba(128, 182, 244, 1)');
+            colors.addColorStop(0, 'rgba(61, 68, 101, 1)');
+            // const colors = generateColorRange(startColor, endColor, steps);
 
             const datasets = valuesByCategory.map((d, index) => ({
                 label: d.category_name,
@@ -398,7 +443,7 @@ const Dashboard = () => {
 
         fetchData();
         fetchUsername();
-    }, [userid, balance]);
+    }, [selectedMonth, selectedYear, userid, balance]);
 
     const keys = ['category_name', 'value'];
 
@@ -415,9 +460,19 @@ const Dashboard = () => {
                 <Navbar icon={<div onClick={toggleBlur}>{iconVisible()}</div>}/>
                 <Headers>
                     <div>
-                        <h1>Bem-vindo, {username}!</h1>
-                        <SubTitle>É bom ter você aqui!</SubTitle>
+                        <h1>Olá, {username}!</h1>
+                        {/* <SubTitle>É bom ter você aqui!</SubTitle> */}
                     </div>
+                    <FilterContainer>
+                        <FilterElement>
+                            <label>Ano</label>
+                            <Filter onFilterChange={handleYearFilterChange} options={possibleYears}/>
+                        </FilterElement>
+                        <FilterElement>
+                            <label>Mês</label>
+                            <Filter onFilterChange={handleMonthFilterChange} options={possibleMonths}/>
+                        </FilterElement>
+                    </FilterContainer>
                 </Headers>
                 <Layout>
                     <LeftPage>
@@ -447,7 +502,7 @@ const Dashboard = () => {
                             </FrameChart>
                         </SupRightPage>
                         <InfRightPage>
-                            <FrameGraphic label="Relatório - Mês atual">
+                            <FrameGraphic label="Relatório">
                                 <BlurWrapper isBlurred={isBlurred}>
                                     <canvas ref={chartRef2} height="370" width="100"></canvas>
                                 </BlurWrapper>
