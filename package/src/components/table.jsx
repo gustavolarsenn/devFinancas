@@ -158,27 +158,6 @@ const Row = ({ record, keys, form }) => {
 };
 
 const RowHistoric = ({ record, keys }) => {
-    const [optionsVisible, setOptionsVisible] = useState(false);
-    const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
-
-    const toggleOptions = (e) => {
-        const rect = e.target.getBoundingClientRect();
-        setMenuPosition({ x: rect.right, y: rect.bottom });
-        setOptionsVisible(!optionsVisible);
-    };
-
-    const handleEdit = () => {
-        // Implementar lógica de edição aqui
-        console.log(`Editar registro com id ${record.id}`);
-        setOptionsVisible(false); // Fechar menu após ação
-    };
-
-    const handleDelete = () => {
-        // Implementar lógica de exclusão aqui
-        console.log(`Excluir registro com id ${record.id}`);
-        setOptionsVisible(false); // Fechar menu após ação
-    };
-
     return (
         <Tr key={record.id} transactiontype={record.type}>
             {keys.map((key) => (
@@ -188,17 +167,6 @@ const RowHistoric = ({ record, keys }) => {
                         : record[key]}
                 </TdHistoric>
             ))}
-            <Icontd>
-                <Span onClick={toggleOptions}>
-                    <SlOptions />
-                </Span>
-                {optionsVisible && (
-                    <OptionsContainer style={{ top: menuPosition.y, left: menuPosition.x }}>
-                        <Option onClick={handleEdit}>Editar</Option>
-                        <Option onClick={handleDelete}>Excluir</Option>
-                    </OptionsContainer>
-                )}
-            </Icontd>
         </Tr>
     );
 }
