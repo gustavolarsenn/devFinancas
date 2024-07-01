@@ -51,6 +51,8 @@ Route::group(['middleware' => [CheckSession::class]], function () {
 
     // returns the home page with all Users
     Route::get('/transaction', [TransactionController::class, 'index']);
+    // returns transaction where transaction_id = $transaction_id
+    Route::post('/transaction/{transaction}', [TransactionController::class, 'get']);
     // returns the form for adding a User
     Route::get('/transaction/create', TransactionController::class . '@create')->name('transaction.create');
     // adds a User to the database

@@ -24,6 +24,20 @@ class TransactionController extends Controller
         return response()->json($transactions);        
     }
 
+    public function get (Request $request, $transaction_id) 
+    {
+        // Pega a sessão
+        $checkSession = new CheckSession();
+        $checkSession->checkSession($request);
+
+        // Pega o id do usuário logado 
+        $user_id = $request->session()->get("user_id");
+        
+        $transactions = Transaction::where('user_id', $user_id)->where('transaction_id', $transaction_id)->get();
+        return response()->json($transactions);        
+    }
+
+
     /**
      * Store a newly created resource in storage.
      */

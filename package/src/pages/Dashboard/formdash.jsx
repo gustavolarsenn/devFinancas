@@ -4,9 +4,9 @@ import Button from "../../components/button";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { show } from "../Cadastro/category";
-import { createTransaction } from "../Cadastro/transaction";
+import { editTransaction, get } from "../Cadastro/transaction";
 
-const Label = styled.label `
+const Label = styled.label`
     padding: 20px 0 5px 0px;
     margin-left: 0px;
     display: flex;
@@ -14,7 +14,7 @@ const Label = styled.label `
     color: #717274;
 `;
 
-const Select = styled.select `
+const Select = styled.select`
     width: 100%;
     height: 40px;
     border-radius: 5px;
@@ -31,14 +31,14 @@ const Select = styled.select `
     }
 `;
 
-const BoxButton = styled.div `
+const BoxButton = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
     padding: 30px;
 `;
 
-const Desc = styled.textarea `
+const Desc = styled.textarea`
     width: 100%;
     height: 150px;
     border-radius: 5px;
@@ -55,84 +55,113 @@ const Desc = styled.textarea `
     }
 `;
 
-const Option = styled.option `
+const Option = styled.option`
     color: #949494;
 `;
 
-const Form = styled.form `
+const Form = styled.form`
     width: 100%;
     max-width: 100%;
     align-items: center;
 `;
 
-const Divform = styled.div `
+const Divform = styled.div`
     width: 100%;
     align-content: center;
 `;
 
-const FormDash = () => {
+const FormDash = ({ transactionId }) => {
+  // Estado do usuário 
+  const [userid, setUserid] = useState('');
 
-    const [userid, setUserid] = useState('');
+  // Estado do option
+  const [categories, setCategories] = useState([]);
 
-    // Estado do option
-    const [categories, setCategories] = useState([]);
+  // Estado das transações
+  const [transactions, setTransactions] = useState([]);
 
-    // Step 1: Create a new Date object for the current date
-    const currentDate = new Date();
+  // Step 1: Create a new Date object for the current date
+  const currentDate = new Date();
 
-    // Step 2: Format the date to "YYYY-MM-DD"
-    const formattedDate = currentDate.toISOString().split('T')[0];
+  // Step 2: Format the date to "YYYY-MM-DD"
+  const formattedDate = currentDate.toISOString().split('T')[0];
 
-    // Estado da data de criação
-    const [date, setDate] = useState(formattedDate);
+  // Estado da data de criação
+  const [date, setDate] = useState(formattedDate);
 
-    const fetchData = async () => {
-        const data = await show();
-        setCategories(data);
-    }
+  const fetchTransaction = async () => {
+    try {
+      if (transactions.length > 0) {
+        // Obter o token CSRF
+        const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
+        const csrfToken = csrfTokenResponse.data;
 
-    useEffect(() => {
-        const fetchUserid = async () => {
-          const response = await axios.get('http://localhost:8000/auth', { withCredentials: true });
-          setUserid(response.data.user_id);
-        };
+        // Obter os dados da transação usando a função get
+        const res = await get(transactionId, csrfToken, userid);
 
-        fetchUserid();  
-        fetchData();
-      }, [userid]);
+        // Verificar se res contém os dados esperados
+        console.log('Dados da transação:', res);
 
-      const removeCurrencyFormatting = (price) => {
-        return parseFloat(price.replace(/[R$ ]/g, '').replace(/\./g, '').replace(',', '.'));
-      };
-
-      const handleTransaction = async () => {
-        try {
-            const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
-            const csrfToken = csrfTokenResponse.data;
-
-            const tipo = document.getElementById("type").value;
-            const value = document.getElementById("price").value;
-            const descricao = document.getElementById("desc").value;
-            const category = document.getElementById("category").value;
-            const dateNow = new Date(Date.now());
-            
-            const createdAt = dateNow.toISOString().slice(0, 19).replace('T', ' ');
-
-            const formattedValue = removeCurrencyFormatting(value);
-
-            const response = await createTransaction(category, userid, tipo, formattedValue, descricao, date, createdAt, csrfToken);
-
-            if(!response) {
-                console.log("Transaction created with success!");  
-                window.location.reload();
-            } else {
-                console.log("Error in creating transaction!");
-            }
-        
-        } catch (error) {
-            console.error('Erro ao criar transaction:', error);
+        if (res) {
+          setTransactions(res);
         }
       }
+
+    } catch (error) {
+      console.error('Erro ao buscar transação:', error);
+      throw error;
+    }
+  }
+
+
+  const fetchData = async () => {
+    const data = await show();
+    setCategories(data);
+  }
+
+  useEffect(() => {
+    const fetchUserid = async () => {
+      const response = await axios.get('http://localhost:8000/auth', { withCredentials: true });
+      setUserid(response.data.user_id);
+    };
+
+    fetchTransaction();
+    fetchUserid();
+    fetchData();
+  }, [userid, transactions]);
+
+  const removeCurrencyFormatting = (price) => {
+    return parseFloat(price.replace(/[R$ ]/g, '').replace(/\./g, '').replace(',', '.'));
+  };
+
+  const handleTransaction = async () => {
+    try {
+      const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
+      const csrfToken = csrfTokenResponse.data;
+
+      const tipo = document.getElementById("type").value;
+      const value = document.getElementById("price").value;
+      const descricao = document.getElementById("desc").value;
+      const category = document.getElementById("category").value;
+      const dateNow = new Date(Date.now());
+
+      const createdAt = dateNow.toISOString().slice(0, 19).replace('T', ' ');
+
+      const formattedValue = removeCurrencyFormatting(value);
+
+      const response = await editTransaction(transactionId, category, userid, tipo, formattedValue, descricao, date, createdAt, csrfToken);
+
+      if (!response) {
+        console.log("Transaction edited with success!");
+        window.location.reload();
+      } else {
+        console.log("Error in creating transaction!");
+      }
+
+    } catch (error) {
+      console.error('Erro ao criar transaction:', error);
+    }
+  }
 
   return (
     <Divform>
@@ -146,10 +175,6 @@ const FormDash = () => {
           </Option>
           {categories &&
             categories
-              .filter(
-                (category) =>
-                  category.user_id === userid || category.user_id === 0
-              )
               .map((category) => (
                 <Option key={category.category_id} value={category.category_id}>
                   {category.category_name}

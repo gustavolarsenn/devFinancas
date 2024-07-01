@@ -10,7 +10,6 @@ const FilterContainer = styled.div`
 
 const FilterElement = styled.div`
     display: grid;
-    text-align: center;
     gap: 5px;
     font-size: 1.0rem;
 `;

@@ -3,6 +3,9 @@ import { SlOptions } from "react-icons/sl";
 import { useState } from "react";
 import Modal from "../components/modal";
 import { FaRegTrashAlt } from "react-icons/fa";
+import FormDash from "../pages/Dashboard/formdash";
+import { deleteTransaction } from "../pages/Cadastro/transaction";
+import axios from "axios";
 
 const TableStyle = styled.table`
     width: 100%;
@@ -23,7 +26,7 @@ const TdHistoric = styled.td`
     width: 30%;
     text-align: start;
     font-size: 1rem;
-`; 
+`;
 
 const Icontd = styled.td`
     text-align: end;
@@ -67,7 +70,7 @@ const Option = styled.div`
     }
 `;
 
-const DivTable = styled.div `
+const DivTable = styled.div`
     width: 100%;
     max-height: 350px;
     padding-top: 10px;
@@ -93,6 +96,7 @@ const Row = ({ record, keys, form }) => {
     const [optionsVisible, setOptionsVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
+
     // Estado do Modal 
     const [modal, setModal] = useState(false);
 
@@ -104,15 +108,26 @@ const Row = ({ record, keys, form }) => {
 
     const handleEdit = () => {
         // Implementar lógica de edição aqui
-        console.log(`Editar registro com id ${record.id}`);
+        console.log(`Editar registro com id ${record.transaction_id}`);
         setOptionsVisible(false); // Fechar menu após ação
         setModal(!modal);
     };
 
-    const handleDelete = () => {
-        // Implementar lógica de exclusão aqui
-        console.log(`Excluir registro com id ${record.id}`);
-        setOptionsVisible(false); // Fechar menu após ação
+    const handleDelete = async () => {
+        try {
+            const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
+            const csrfToken = csrfTokenResponse.data;
+
+            const res = await deleteTransaction(record.transaction_id, csrfToken);
+
+            if (res) {
+                console.log(`Excluido registro com id ${record.transaction_id}`);
+                window.location.reload();
+            }
+            setOptionsVisible(false);
+        } catch (error) {
+            console.error("ERROR: ", error);
+        }
     };
 
     return (
@@ -188,12 +203,12 @@ const RowHistoric = ({ record, keys }) => {
     );
 }
 
-const Table = ({ data, keys, form }) => {
+const Table = ({ data, keys }) => {
     return (
         <TableStyle>
             <tbody>
                 {data && data.map((record, index) => (
-                    <Row key={record.id || index} record={record} keys={keys} form={form}/>
+                    <Row key={record.transaction_id || index} record={record} keys={keys} form={<FormDash transactionId={record.transaction_id} />} />
                 ))}
             </tbody>
         </TableStyle>
@@ -205,7 +220,7 @@ const TableHistoric = ({ data, keys }) => {
         <TableStyle>
             <tbody>
                 {data && data.map((record, index) => (
-                    <RowHistoric key={record.id || index} record={record} keys={keys}/>
+                    <RowHistoric key={record.id || index} record={record} keys={keys} />
                 ))}
             </tbody>
         </TableStyle>
@@ -214,17 +229,17 @@ const TableHistoric = ({ data, keys }) => {
 
 const TableCategory = ({ catTable, handleDelete, keys }) => {
     return (
-      <DivTable>
-        {catTable.map((categoryItem) => (
-          <div key={categoryItem.category_id}>
-            <CategoryTr>
-              {categoryItem.category_name}
-              <FaRegTrashAlt onClick={() => handleDelete(categoryItem.category_id)} style={{'cursor': 'pointer', 'color': 'red'}}/>
-            </CategoryTr>
-          </div>
-        ))}
-      </DivTable>
+        <DivTable>
+            {catTable.map((categoryItem) => (
+                <div key={categoryItem.category_id}>
+                    <CategoryTr>
+                        {categoryItem.category_name}
+                        <FaRegTrashAlt onClick={() => handleDelete(categoryItem.category_id)} style={{ 'cursor': 'pointer', 'color': 'red' }} />
+                    </CategoryTr>
+                </div>
+            ))}
+        </DivTable>
     );
-  };
+};
 
 export { Table, TableHistoric, TableCategory };
