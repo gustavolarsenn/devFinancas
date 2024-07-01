@@ -77,58 +77,61 @@ const FormDash = ({ transactionId }) => {
   // Estado do option
   const [categories, setCategories] = useState([]);
 
-  // Estado das transações
-  const [transactions, setTransactions] = useState([]);
-
+  // Estado de todos os campos da transação para a edição
+  const [transactionID, setTransactionID] = useState(transactionId);
+  const [categoryId, setCategoryId] = useState();
+  const [type, setType] = useState();
+  const [value, setValue] = useState();
+  const [desc, setDesc] = useState();
+  
   // Step 1: Create a new Date object for the current date
   const currentDate = new Date();
-
+  
   // Step 2: Format the date to "YYYY-MM-DD"
   const formattedDate = currentDate.toISOString().split('T')[0];
-
-  // Estado da data de criação
   const [date, setDate] = useState(formattedDate);
-
-  const fetchTransaction = async () => {
-    try {
-      if (transactions.length > 0) {
-        // Obter o token CSRF
-        const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
-        const csrfToken = csrfTokenResponse.data;
-
-        // Obter os dados da transação usando a função get
-        const res = await get(transactionId, csrfToken, userid);
-
-        // Verificar se res contém os dados esperados
-        console.log('Dados da transação:', res);
-
-        if (res) {
-          setTransactions(res);
-        }
-      }
-
-    } catch (error) {
-      console.error('Erro ao buscar transação:', error);
-      throw error;
-    }
-  }
-
-
+  
   const fetchData = async () => {
     const data = await show();
     setCategories(data);
   }
 
   useEffect(() => {
+    const fetchTransaction = async () => {
+      try {
+        // Obter o token CSRF
+        const csrfTokenResponse = await axios.get('http://localhost:8000/csrf-token', { withCredentials: true });
+        const csrfToken = csrfTokenResponse.data;
+  
+        // Obter os dados da transação usando a função get
+        const res = await get(transactionID, csrfToken, userid);
+  
+        // Verificar se res contém os dados esperados
+        console.log('Dados da transação:', res);
+  
+        setCategoryId(res[0].category_id);
+        setType(res[0].type);
+        setValue(res[0].value);
+        setDesc(res[0].descricao);
+        
+        
+      } catch (error) {
+        console.error('Erro ao buscar transação:', error);
+        throw error;
+      }
+    }
+
     const fetchUserid = async () => {
       const response = await axios.get('http://localhost:8000/auth', { withCredentials: true });
       setUserid(response.data.user_id);
     };
 
+    setTransactionID(transactionId);
+
     fetchTransaction();
     fetchUserid();
     fetchData();
-  }, [userid, transactions]);
+  }, [userid, transactionID]);
 
   const removeCurrencyFormatting = (price) => {
     return parseFloat(price.replace(/[R$ ]/g, '').replace(/\./g, '').replace(',', '.'));
@@ -169,7 +172,7 @@ const FormDash = ({ transactionId }) => {
         <Label>
           Categoria:
         </Label>
-        <Select id="category" defaultValue="">
+        <Select id="category" value={categoryId} onChange={e => setCategoryId(e.target.value)}>
           <Option value="" disabled>
             Selecione uma categoria
           </Option>
@@ -182,14 +185,14 @@ const FormDash = ({ transactionId }) => {
               ))}
         </Select>
         <Label>Tipo: </Label>
-        <Select id="type" defaultValue="Entrada">
+        <Select id="type" value={type} onChange={e => setType(e.target.value)}>
           <Option value="Entrada">Entrada</Option>
           <Option value="Saida">Saida</Option>
         </Select>
         <Label>Valor: </Label>
-        <CurrencyInput inputStyle="input_register" id="price" />
+        <CurrencyInput inputStyle="input_register" id="price" value={value} onChange={e => setValue(e.target.value)}/>
         <Label>Descrição: </Label>
-        <Desc id="desc" placeholder="Descrição do registro..." required />
+        <Desc id="desc" placeholder="Descrição do registro..." value={desc} onChange={e => setDesc(e.target.value)} required />
         <Label>Data: </Label>
         <Inputs
           type="date"
@@ -201,7 +204,7 @@ const FormDash = ({ transactionId }) => {
       </Form>
       <BoxButton>
         <Button
-          name="Cadastrar"
+          name="Editar"
           buttonStyle="open"
           onClick={handleTransaction}
           required

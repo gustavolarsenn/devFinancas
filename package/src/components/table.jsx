@@ -96,7 +96,6 @@ const Row = ({ record, keys, form }) => {
     const [optionsVisible, setOptionsVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
-
     // Estado do Modal 
     const [modal, setModal] = useState(false);
 
@@ -110,7 +109,9 @@ const Row = ({ record, keys, form }) => {
         // Implementar lógica de edição aqui
         console.log(`Editar registro com id ${record.transaction_id}`);
         setOptionsVisible(false); // Fechar menu após ação
-        setModal(!modal);
+        if(record.transaction_id) {
+            setModal(!modal);   
+        }
     };
 
     const handleDelete = async () => {

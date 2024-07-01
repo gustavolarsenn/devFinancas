@@ -37,7 +37,6 @@ class TransactionController extends Controller
         return response()->json($transactions);        
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
